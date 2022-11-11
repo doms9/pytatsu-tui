@@ -1,0 +1,15 @@
+.idea/
+__pycache__/
+requirements.in
+todo*
+env/
+.vscode/
+# -
+virtualenv.pyz
+venv/
+*.plist
+*.shsh2
+tatsu.ini
+path.txt
+firmwares.json
+devices.json
