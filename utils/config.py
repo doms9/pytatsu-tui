@@ -355,10 +355,11 @@ def delete_blob_dirs(device: int) -> None:
     """
 
     if len(num_of_devices()) == device == 1:
-        send2trash([config_file(), blob_dir(1)])
+        send2trash(config_file())
+        send2trash(blob_dir(1)) if blob_dir(1).exists() else ...
         return
 
-    send2trash(blob_dir(device))
+    send2trash(blob_dir(device)) if blob_dir(device).exists() else ...
 
     if device == 1:
         for existing in num_of_devices()[1:]:
