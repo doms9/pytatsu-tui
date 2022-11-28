@@ -16,7 +16,7 @@ ERROR = colored("ERROR:", "red", attrs=["bold"])
 SUCCESS = colored("Successfully", "green")
 
 
-def clear_terminal() -> subprocess.CompletedProcess[bytes]:
+def clear_terminal() -> int:
     """
     Clear the terminal
     """
@@ -66,7 +66,7 @@ def config_dir() -> Path:
     Path to where the config, blobs, and build manifests are saved
     """
 
-    config_dir_text = Path("./path.txt").resolve()
+    config_dir_text = Path("./cfg_path.txt").resolve()
 
     if not config_dir_text.exists():
         clear_terminal()
@@ -83,7 +83,7 @@ def config_dir() -> Path:
         directory = Path(input_directory)
 
         try:
-            config_dir_text.write_text(f"{directory}", encoding="utf-8")
+            config_dir_text.write_text(f"{directory!s}", encoding="utf-8")
 
             (directory / "permissionchecking12345").mkdir()
 
@@ -356,10 +356,14 @@ def delete_blob_dirs(device: int) -> None:
 
     if len(num_of_devices()) == device == 1:
         send2trash(config_file())
-        send2trash(blob_dir(1)) if blob_dir(1).exists() else ...
+
+        if blob_dir(1).exists():
+            send2trash(blob_dir(1))
+
         return
 
-    send2trash(blob_dir(device)) if blob_dir(device).exists() else ...
+    if blob_dir(device).exists():
+        send2trash(blob_dir(device))
 
     if device == 1:
         for existing in num_of_devices()[1:]:

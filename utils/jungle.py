@@ -183,20 +183,9 @@ def view_blob_info(device: DeviceInfo, firmwares: Firmwares) -> None:
         )
     )
 
-    bins = Path("./bins").resolve()
-
-    if platform.system() == "Windows":
-        img4tool = bins / "wimg4tool"
-
-    elif platform.system() == "Linux":
-        img4tool = bins / "limg4tool"
-
-    elif platform.system() == "Darwin":
-        img4tool = bins / "dimg4tool"
-
     img4tool_output = subprocess.run(
         [
-            img4tool,
+            Path(f"./bins/{platform.system()}").resolve() / "img4tool",
             "-s",
             blob_dir(device.number) / blob_file,
             "-v",
@@ -276,11 +265,11 @@ def rename_blobs(device: DeviceInfo) -> None:
 
             blob_name, shsh2 = os.path.splitext(file)
 
-            blob_name = blob_name.split("_")[3]
+            vers_build = blob_name.split("_")[3]
 
             shutil.move(
                 blob_dir(device.number) / file,
-                blob_dir(device.number) / f"{blob_name}{shsh2}",
+                blob_dir(device.number) / f"{vers_build}{shsh2}",
             )
 
     wait_to_cont(
