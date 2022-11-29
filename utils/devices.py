@@ -78,6 +78,21 @@ def get_device_info(device: int) -> tuple[int, str, str, int, str, str]:
 
     config_prsr.read(config_file())
 
+    if (
+        re.search(
+            r"(ipod|iphone|ipad|appletv)[0-9]{1,2},[0-9]{1,2}",
+            config_prsr[f"DEVICE {device}"]["model"].lower(),
+        )
+        is None
+    ):
+        wait_to_exit(
+            f"{ERROR} Invalid MODEL for DEVICE {device}",
+            f'\n\n"{config_prsr[f"DEVICE {device}"]["model"]}" is not a valid device model.',
+            "\n\nThis script supports iPods, iPhones, iPads, and Apple TVs.",
+            f"\n\nPlease edit {config_file()} before continuing.",
+            clear=True,
+        )
+
     for key, value in config_prsr.items(f"DEVICE {device}"):
         value = value.strip()
 
@@ -127,21 +142,6 @@ def get_device_info(device: int) -> tuple[int, str, str, int, str, str]:
                 f"\n\nPlease edit {config_file()} before continuing.",
                 clear=True,
             )
-
-    if (
-        re.search(
-            r"(ipod|iphone|ipad|appletv)[0-9]{1,2},[0-9]{1,2}",
-            config_prsr[f"DEVICE {device}"]["model"].lower(),
-        )
-        is None
-    ):
-        wait_to_exit(
-            f"{ERROR} Invalid MODEL for DEVICE {device}",
-            f'\n\n"{config_prsr[f"DEVICE {device}"]["model"]}" is not a valid device model.',
-            "\n\nThis script supports iPods, iPhones, iPads, and Apple TVs.",
-            f"\n\nPlease edit {config_file()} before continuing.",
-            clear=True,
-        )
 
     model = config_prsr[f"DEVICE {device}"]["model"].strip()
     board = config_prsr[f"DEVICE {device}"]["board"].strip()

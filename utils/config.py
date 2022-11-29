@@ -66,7 +66,7 @@ def config_dir() -> Path:
     Path to where the config, blobs, and build manifests are saved
     """
 
-    config_dir_text = Path("./cfg_path.txt").resolve()
+    config_dir_text = Path("./path.txt").resolve()
 
     if not config_dir_text.exists():
         clear_terminal()
@@ -80,9 +80,10 @@ def config_dir() -> Path:
             title="Choose a directory for your blobs",
         )
 
-        directory = Path(input_directory)
-
         try:
+
+            directory = Path(input_directory)
+
             config_dir_text.write_text(f"{directory!s}", encoding="utf-8")
 
             (directory / "permissionchecking12345").mkdir()
@@ -97,7 +98,13 @@ def config_dir() -> Path:
                 clear=True,
             )
 
-        return directory
+        except TypeError:
+            wait_to_exit(
+                "Please re-run and select a directory to save your config file and blobs.",
+                clear=True,
+            )
+
+        return directory.resolve()
 
     try:
         directory = Path(config_dir_text.read_text(encoding="utf-8").strip())
@@ -122,7 +129,7 @@ def config_dir() -> Path:
             clear=True,
         )
 
-    return directory
+    return directory.resolve()
 
 
 def config_file() -> Path:

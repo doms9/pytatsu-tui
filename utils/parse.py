@@ -34,7 +34,7 @@ class AllDevices:
 
     def check(self, model: str, board: str) -> str | None:
         """
-        Returns the iOS device name if given parameters are valid
+        Returns the iOS device name if given arguments is a valid model/board combination
 
         Example::
 
@@ -129,7 +129,7 @@ class Firmwares:
         indicate: bool = True,
     ) -> None:
         """
-        Extracts the BuildManifest.plist from an IPSW link asynchronously.
+        Extracts the BuildManifest.plist from an Apple IPSW link
 
         `version` must be the base iOS version number
 

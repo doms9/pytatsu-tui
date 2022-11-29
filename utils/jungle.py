@@ -86,6 +86,9 @@ def save_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
                 f"for DEVICE {device.number}!",
             )
 
+        else:
+            wait_to_cont()
+
     elif all_or_one == "m":
         clear_terminal()
 
@@ -258,8 +261,8 @@ def rename_blobs(device: DeviceInfo) -> None:
     blobs_to_be_renamed = []
 
     for file in os.listdir(blob_dir(device.number)):
-        if f"{device.ecid}_{device.model.lower()}" in file.lower() and file.endswith(
-            ".shsh2"
+        if file.endswith(".shsh2") and (
+            f"{device.ecid}_{device.model.lower()}" in file.lower()
         ):
             blobs_to_be_renamed.append(file)
 
