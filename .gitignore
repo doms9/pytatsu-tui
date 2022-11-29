@@ -5,10 +5,10 @@ todo*
 env/
 .vscode/
 # -
-cfg_path.txt
 dev/
 devices.json
 firmwares.json
+path.txt
 tatsu.ini
 virtualenv.pyz
 venv/
