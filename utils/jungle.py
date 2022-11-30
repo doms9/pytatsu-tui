@@ -17,7 +17,7 @@ from pyimg4 import IM4M
 from pytatsu.tss import TSS
 from termcolor import colored
 
-from .api import devices_file, firmwares_file, request_apis
+from .api import devices_file, firmwares_file
 from .config import (
     ERROR,
     SUCCESS,
@@ -470,7 +470,6 @@ def main(selected_device: int) -> NoReturn:
             "\n6) Change current device",
             "\n7) Add new device(s)",
             "\n8) Remove device(s)",
-            "\n9) Fetch latest data for firmwares and devices",
             "\nElse) Exit",
         )
 
@@ -504,13 +503,6 @@ def main(selected_device: int) -> NoReturn:
                 if rm_device():
                     create_config()
                     main(device_selection())
-
-            case "9":
-                clear_terminal()
-                print("Updating locally saved json files...")
-                loop = asyncio.get_event_loop()
-                loop.run_until_complete(request_apis(device.model))
-                wait_to_cont(f"\n{colored('Done!', 'green')}")
 
             case _:
                 print("\nExiting...")
