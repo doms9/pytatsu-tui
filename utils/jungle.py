@@ -382,13 +382,13 @@ def list_signed_vers(device: DeviceInfo, firmwares: Firmwares) -> bool:
     return False
 
 
-def delete_manifests(board: str, number: int) -> None:
+def delete_manifests(board: str, device_number: int) -> None:
     send2trash(
-        [plists for plists in bm_dir().iterdir() if board in f"{plists}"],
+        [plists for plists in bm_dir().iterdir() if board in f"{plists!s}"],
     )
 
     wait_to_cont(
-        f"{SUCCESS} deleted all BuildManifests files for DEVICE {number}!",
+        f"{SUCCESS} deleted all BuildManifests files for DEVICE {device_number}!",
         clear=True,
     )
 

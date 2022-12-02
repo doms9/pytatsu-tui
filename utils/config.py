@@ -329,7 +329,9 @@ def rm_device() -> bool:
             f"will be {colored('deleted', 'red', attrs=['underline'])}\n",
         )
 
-        confirm = input("Are you sure you want to continue?\n\n[Y/N] : ").lower()
+        confirm = (
+            input("Are you sure you want to continue?\n\n[Y/N] : ").lower().strip()
+        )
 
         if confirm in ("y", "yes"):
 

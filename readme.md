@@ -16,7 +16,7 @@ A way to save/manage \*OS blobs using [pytatsu](https://github.com/Cryptiiiic/Ta
 - Clone the repository
 
   ```sh
-  git clone --depth=1 https://github.com/doms9/Tatsu-Manager
+  git clone https://github.com/doms9/Tatsu-Manager --depth=1
 
   cd ./Tatsu-Manager
   ```
@@ -40,7 +40,7 @@ A way to save/manage \*OS blobs using [pytatsu](https://github.com/Cryptiiiic/Ta
   ```sh
   curl -sSO https://bootstrap.pypa.io/virtualenv.pyz
 
-  python3 virtualenv.pyz -q venv && source ./venv/bin/activate
+  python3 virtualenv.pyz -q venv && . ./venv/bin/activate
 
   python3 -m pip install -r requirements.txt
 
