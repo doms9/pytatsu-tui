@@ -15,6 +15,7 @@ from typing import NoReturn
 
 from pyimg4 import IM4M
 from pytatsu.tss import TSS
+from send2trash import send2trash
 from termcolor import colored
 
 from .api import devices_file, firmwares_file
@@ -381,6 +382,15 @@ def list_signed_vers(device: DeviceInfo, firmwares: Firmwares) -> bool:
     return False
 
 
+def delete_manifests(board: str, number: int) -> None:
+    send2trash([plists for plists in bm_dir().iterdir() if board in f"{plists}"])
+
+    wait_to_cont(
+        f"{SUCCESS} deleted all BuildManifests files for DEVICE {number}!",
+        clear=True,
+    )
+
+
 @contextmanager
 def hide_prints() -> Generator[TextIOWrapper, None, None]:
     """
@@ -470,6 +480,7 @@ def main(selected_device: int) -> NoReturn:
             "\n6) Change current device",
             "\n7) Add new device(s)",
             "\n8) Remove device(s)",
+            "\n9) Delete BuildManifests",
             "\nElse) Exit",
         )
 
@@ -503,6 +514,9 @@ def main(selected_device: int) -> NoReturn:
                 if rm_device():
                     create_config()
                     main(device_selection())
+
+            case "9":
+                delete_manifests(device.board, device.number)
 
             case _:
                 print("\nExiting...")
