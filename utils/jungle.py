@@ -15,9 +15,10 @@ from typing import NoReturn
 
 from pyimg4 import IM4M
 from pytatsu.tss import TSS
+from send2trash import send2trash
 from termcolor import colored
 
-from .api import devices_file, firmwares_file, request_apis
+from .api import devices_file, firmwares_file
 from .config import (
     ERROR,
     SUCCESS,
@@ -85,6 +86,9 @@ def save_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
                 f"\n\n{SUCCESS} saved blobs of all signed iOS versions",
                 f"for DEVICE {device.number}!",
             )
+
+        else:
+            wait_to_cont()
 
     elif all_or_one == "m":
         clear_terminal()
@@ -183,20 +187,9 @@ def view_blob_info(device: DeviceInfo, firmwares: Firmwares) -> None:
         )
     )
 
-    bins = Path("./bins").resolve()
-
-    if platform.system() == "Windows":
-        img4tool = bins / "wimg4tool"
-
-    elif platform.system() == "Linux":
-        img4tool = bins / "limg4tool"
-
-    elif platform.system() == "Darwin":
-        img4tool = bins / "dimg4tool"
-
     img4tool_output = subprocess.run(
         [
-            img4tool,
+            Path(f"./bins/{platform.system()}").resolve() / "img4tool",
             "-s",
             blob_dir(device.number) / blob_file,
             "-v",
@@ -269,18 +262,18 @@ def rename_blobs(device: DeviceInfo) -> None:
     blobs_to_be_renamed = []
 
     for file in os.listdir(blob_dir(device.number)):
-        if f"{device.ecid}_{device.model.lower()}" in file.lower() and file.endswith(
-            ".shsh2"
+        if file.endswith(".shsh2") and (
+            f"{device.ecid}_{device.model.lower()}" in file.lower()
         ):
             blobs_to_be_renamed.append(file)
 
             blob_name, shsh2 = os.path.splitext(file)
 
-            blob_name = blob_name.split("_")[3]
+            vers_build = blob_name.split("_")[3]
 
             shutil.move(
                 blob_dir(device.number) / file,
-                blob_dir(device.number) / f"{blob_name}{shsh2}",
+                blob_dir(device.number) / f"{vers_build}{shsh2}",
             )
 
     wait_to_cont(
@@ -389,10 +382,21 @@ def list_signed_vers(device: DeviceInfo, firmwares: Firmwares) -> bool:
     return False
 
 
+def delete_manifests(board: str, device_number: int) -> None:
+    send2trash(
+        [plists for plists in bm_dir().iterdir() if board in f"{plists!s}"],
+    )
+
+    wait_to_cont(
+        f"{SUCCESS} deleted all BuildManifests files for DEVICE {device_number}!",
+        clear=True,
+    )
+
+
 @contextmanager
 def hide_prints() -> Generator[TextIOWrapper, None, None]:
     """
-    Hide all print function calls within a context manager
+    Hide all print calls within a context manager
     """
 
     og_stdout = sys.stdout
@@ -436,7 +440,7 @@ def tss_request(device: DeviceInfo, version: str, build: str) -> None:
 
 def main(selected_device: int) -> NoReturn:
     """
-    Display list of options for the given device
+    Display list of options
     """
 
     device = DeviceInfo(*get_device_info(selected_device))
@@ -478,7 +482,7 @@ def main(selected_device: int) -> NoReturn:
             "\n6) Change current device",
             "\n7) Add new device(s)",
             "\n8) Remove device(s)",
-            "\n9) Fetch latest data for firmwares and devices",
+            "\n9) Delete BuildManifests",
             "\nElse) Exit",
         )
 
@@ -514,11 +518,7 @@ def main(selected_device: int) -> NoReturn:
                     main(device_selection())
 
             case "9":
-                clear_terminal()
-                print("Updating locally saved json files...")
-                loop = asyncio.get_event_loop()
-                loop.run_until_complete(request_apis(device.model))
-                wait_to_cont(f"\n{colored('Done!', 'green')}")
+                delete_manifests(device.board, device.number)
 
             case _:
                 print("\nExiting...")

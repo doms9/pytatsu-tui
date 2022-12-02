@@ -16,7 +16,7 @@ ERROR = colored("ERROR:", "red", attrs=["bold"])
 SUCCESS = colored("Successfully", "green")
 
 
-def clear_terminal() -> subprocess.CompletedProcess[bytes]:
+def clear_terminal() -> int:
     """
     Clear the terminal
     """
@@ -63,7 +63,7 @@ def wait_to_exit(*args, clear: bool = False) -> NoReturn:
 
 def config_dir() -> Path:
     """
-    Path to where the config, blobs, and build manifests are saved
+    Path to where the config file, blobs, and buildmanifests are saved
     """
 
     config_dir_text = Path("./path.txt").resolve()
@@ -80,10 +80,11 @@ def config_dir() -> Path:
             title="Choose a directory for your blobs",
         )
 
-        directory = Path(input_directory)
-
         try:
-            config_dir_text.write_text(f"{directory}", encoding="utf-8")
+
+            directory = Path(input_directory)
+
+            config_dir_text.write_text(f"{directory!s}", encoding="utf-8")
 
             (directory / "permissionchecking12345").mkdir()
 
@@ -97,7 +98,13 @@ def config_dir() -> Path:
                 clear=True,
             )
 
-        return directory
+        except TypeError:
+            wait_to_exit(
+                "Please re-run and select a directory to save your config file and blobs.",
+                clear=True,
+            )
+
+        return directory.resolve()
 
     try:
         directory = Path(config_dir_text.read_text(encoding="utf-8").strip())
@@ -122,7 +129,7 @@ def config_dir() -> Path:
             clear=True,
         )
 
-    return directory
+    return directory.resolve()
 
 
 def config_file() -> Path:
@@ -135,7 +142,7 @@ def config_file() -> Path:
 
 def bm_dir() -> Path:
     """
-    Path to the directory where build manifests are saved
+    Path to the buildmanifests' directory
     """
 
     return config_dir() / "BuildManifests"
@@ -151,7 +158,7 @@ def blob_dir(device_number: int) -> Path:
 
 def create_config() -> None:
     """
-    Create a config if it doesn't already exist
+    Create a config file if it doesn't exist
     """
 
     while not config_file().is_file():
@@ -322,7 +329,9 @@ def rm_device() -> bool:
             f"will be {colored('deleted', 'red', attrs=['underline'])}\n",
         )
 
-        confirm = input("Are you sure you want to continue?\n\n[Y/N] : ").lower()
+        confirm = (
+            input("Are you sure you want to continue?\n\n[Y/N] : ").lower().strip()
+        )
 
         if confirm in ("y", "yes"):
 
@@ -356,10 +365,14 @@ def delete_blob_dirs(device: int) -> None:
 
     if len(num_of_devices()) == device == 1:
         send2trash(config_file())
-        send2trash(blob_dir(1)) if blob_dir(1).exists() else ...
+
+        if blob_dir(1).exists():
+            send2trash(blob_dir(1))
+
         return
 
-    send2trash(blob_dir(device)) if blob_dir(device).exists() else ...
+    if blob_dir(device).exists():
+        send2trash(blob_dir(device))
 
     if device == 1:
         for existing in num_of_devices()[1:]:
