@@ -16,7 +16,7 @@ TIMEOUT = httpx.Timeout(10.0)
 
 def request_apis(model: str) -> asyncio.Future[tuple[None, None]]:
     """
-    Run api get requests in parallel
+    Run get requests in parallel
     """
 
     return asyncio.gather(
@@ -46,12 +46,12 @@ async def __ios_firmwares(model: str) -> None:
 
     except httpx.ConnectTimeout:
         wait_to_exit(
-            f"{ERROR} Timed out while receiving data from api GET request.",
+            f"{ERROR} Timed out while receiving data from api get request.",
             "\n\nPlease try again later.",
             clear=True,
         )
 
-    if stable_api.is_success:
+    if stable_api.status_code == 200:
         with firmwares_file.open("w", encoding="utf-8") as a:
             json.dump({"firmwares": []}, a, indent=2)
 
@@ -61,7 +61,7 @@ async def __ios_firmwares(model: str) -> None:
         for x in stable_api.json()["firmwares"]:
             data["firmwares"].append(x)
 
-        if beta_api.is_success:
+        if beta_api.status_code == 200:
             for y in beta_api.json():
                 if y != "detail":
                     data["firmwares"].append(y)
@@ -80,7 +80,7 @@ async def __ios_firmwares(model: str) -> None:
 
     else:
         wait_to_exit(
-            f'{ERROR} api GET request returned status code "{stable_api.status_code}"',
+            f'{ERROR} api get request returned status code "{stable_api.status_code}"',
             f'\n\n"{model}" may not be a valid Apple device.'
             "\n\nPlease edit this or try again later.",
             clear=True,
@@ -104,14 +104,14 @@ async def __ios_devices() -> None:
 
     except httpx.ConnectTimeout:
         wait_to_exit(
-            f"{ERROR} Timed out while receiving data from api GET request.",
+            f"{ERROR} Timed out while receiving data from api get request.",
             "\n\nPlease try again later.",
             clear=True,
         )
 
     entry = {}
 
-    if device_info.is_success:
+    if device_info.status_code == 200:
         devices = device_info.json()
 
         with devices_file.open("w", encoding="utf-8") as a:
@@ -134,7 +134,7 @@ async def __ios_devices() -> None:
 
     else:
         wait_to_exit(
-            f'{ERROR} api GET request returned status code "{device_info.status_code}"',
+            f'{ERROR} api get request returned status code "{device_info.status_code}"',
             "\n\nPlease try again later.",
             clear=True,
         )

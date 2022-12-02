@@ -160,12 +160,12 @@ class Firmwares:
 
             except httpx.ConnectTimeout:
                 wait_to_exit(
-                    f"{ERROR} Timed out while receiving data from GET Request.",
+                    f"{ERROR} Timed out while receiving data from api get request.",
                     "\n\nPlease try again later.",
                     clear=True,
                 )
 
-            if bm_request.is_success:
+            if bm_request.status_code == 200:
                 (bm_dir() / f"{version}-{build}-{device.board}.plist").write_bytes(
                     bm_request.content
                 )

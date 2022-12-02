@@ -383,7 +383,9 @@ def list_signed_vers(device: DeviceInfo, firmwares: Firmwares) -> bool:
 
 
 def delete_manifests(board: str, number: int) -> None:
-    send2trash([plists for plists in bm_dir().iterdir() if board in f"{plists}"])
+    send2trash(
+        [plists for plists in bm_dir().iterdir() if board in f"{plists}"],
+    )
 
     wait_to_cont(
         f"{SUCCESS} deleted all BuildManifests files for DEVICE {number}!",
@@ -394,7 +396,7 @@ def delete_manifests(board: str, number: int) -> None:
 @contextmanager
 def hide_prints() -> Generator[TextIOWrapper, None, None]:
     """
-    Hide all print function calls within a context manager
+    Hide all print calls within a context manager
     """
 
     og_stdout = sys.stdout
@@ -438,7 +440,7 @@ def tss_request(device: DeviceInfo, version: str, build: str) -> None:
 
 def main(selected_device: int) -> NoReturn:
     """
-    Display list of options for the given device
+    Display list of options
     """
 
     device = DeviceInfo(*get_device_info(selected_device))

@@ -20,7 +20,7 @@ from .config import (
 
 def device_selection() -> int:
     """
-    Select a device from the configuration file
+    Select a device from the config
     """
 
     while True:
@@ -73,7 +73,7 @@ def isdex(value: str) -> bool:
 
 def get_device_info(device: int) -> tuple[int, str, str, int, str, str]:
     """
-    Parses config for the selected device and returns the user's stored values
+    Returns the stored values for the given device in the config
     """
 
     config_prsr.read(config_file())

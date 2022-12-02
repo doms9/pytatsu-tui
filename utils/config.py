@@ -63,7 +63,7 @@ def wait_to_exit(*args, clear: bool = False) -> NoReturn:
 
 def config_dir() -> Path:
     """
-    Path to where the config, blobs, and build manifests are saved
+    Path to where the config file, blobs, and buildmanifests are saved
     """
 
     config_dir_text = Path("./path.txt").resolve()
@@ -142,7 +142,7 @@ def config_file() -> Path:
 
 def bm_dir() -> Path:
     """
-    Path to the directory where build manifests are saved
+    Path to the buildmanifests' directory
     """
 
     return config_dir() / "BuildManifests"
@@ -158,7 +158,7 @@ def blob_dir(device_number: int) -> Path:
 
 def create_config() -> None:
     """
-    Create a config if it doesn't already exist
+    Create a config file if it doesn't exist
     """
 
     while not config_file().is_file():
