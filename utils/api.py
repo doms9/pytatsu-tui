@@ -68,10 +68,10 @@ async def __ios_firmwares(model: str) -> None:
 
         for z in data["firmwares"]:
             z["name"] = z.pop("version").replace("[", "").replace("]", "")
-            z["base_number"] = re.sub(r"[^0-9.]\s*[a-zA-Z]*\d*", "", z["name"])
+            z["base"] = re.sub(r"[^0-9.]\s*[a-zA-Z]*\d*", "", z["name"])
             z["build"] = z.pop("buildid")
             z["ipsw"] = z.pop("url")
-            z["build_manifest"] = (
+            z["buildmanifest"] = (
                 re.sub(r"[^/]*$", "", z["ipsw"]) + "BuildManifest.plist"
             )
 

@@ -2,6 +2,7 @@ import platform
 import shutil
 import subprocess
 from configparser import ConfigParser
+from distutils.util import strtobool
 from pathlib import Path
 from tkinter import Tk, filedialog
 from typing import NoReturn
@@ -84,7 +85,7 @@ def config_dir() -> Path:
 
             directory = Path(input_directory)
 
-            config_dir_text.write_text(f"{directory!s}", encoding="utf-8")
+            config_dir_text.write_text(f"{directory}", encoding="utf-8")
 
             (directory / "permissionchecking12345").mkdir()
 
@@ -220,12 +221,12 @@ def create_config() -> None:
 
 def num_of_devices() -> list[int]:
     """
-    Return the total number of devices in the config
+    Return the numbers of devices in the config
     """
 
     config_prsr.read(config_file())
 
-    return [devices[0] + 1 for devices in enumerate(config_prsr.sections())]
+    return [devices[0] for devices in enumerate(config_prsr.sections(), start=1)]
 
 
 def add_device() -> None:
@@ -293,14 +294,14 @@ def rm_device() -> bool:
     """
     Remove device(s) from the config
 
-    Returns `True` if a device was removed
+    Returns `1 (True)` if a device was removed
 
-    Returns `False` otherwise
+    Returns `0 (False)` otherwise
     """
 
     clear_terminal()
 
-    removed = False
+    confirm = 0
 
     print("Which device would you like to remove?\n")
 
@@ -314,48 +315,49 @@ def rm_device() -> bool:
         device = int(selected_device)
     except ValueError:
         if selected_device == "":
-            return removed
+            return confirm
 
         wait_to_cont(
             "Please enter an integer from the list of devices.",
             clear=True,
         )
-        return removed
+        return confirm
 
     if device in num_of_devices():
-
         print(
             f"\nBy proceeding, all saved blobs for DEVICE {device}",
             f"will be {colored('deleted', 'red', attrs=['underline'])}\n",
         )
 
-        confirm = (
-            input("Are you sure you want to continue?\n\n[Y/N] : ").lower().strip()
+    else:
+        wait_to_cont(
+            f"DEVICE {colored(device, 'red')} does not exist.",
+            clear=True,
+        )
+        return confirm
+
+    try:
+        confirm = strtobool(
+            input("Are you sure you want to continue?\n\n[Y/N]: ").strip()
+        )
+    except ValueError:
+        confirm = 0
+
+    if confirm:
+        delete_blob_dirs(device)
+
+        wait_to_cont(
+            f"{SUCCESS} deleted DEVICE {device}!",
+            clear=True,
         )
 
-        if confirm in ("y", "yes"):
-
-            removed = True
-
-            delete_blob_dirs(device)
-
-            wait_to_cont(
-                f"{SUCCESS} deleted DEVICE {device}!",
-                clear=True,
-            )
-            return removed
-
+    else:
         wait_to_cont(
             "Aborting...",
             clear=True,
         )
-        return removed
 
-    wait_to_cont(
-        f"DEVICE {colored(device, 'red')} does not exist.",
-        clear=True,
-    )
-    return removed
+    return confirm
 
 
 def delete_blob_dirs(device: int) -> None:

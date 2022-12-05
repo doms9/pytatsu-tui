@@ -77,7 +77,7 @@ class Firmwares:
 
         for entry in self.firmwares:
             if version == entry["name"].lower() or version == entry["build"].lower():
-                return [entry["name"], entry["base_number"], entry["build"]]
+                return [entry["name"], entry["base"], entry["build"]]
 
         return [None for _ in range(3)]
 
@@ -107,23 +107,20 @@ class Firmwares:
         Lists all signed iOS version names with their corresponding build identifiers
         """
 
-        signed_version_names = [
-            entry["name"]
-            for entry in self.firmwares
-            if self.signing_status(version=entry["name"])
+        signed_names = [
+            *filter(self.signing_status, [entry["name"] for entry in self.firmwares])
         ]
 
         signed_builds = [
-            entry["build"]
-            for entry in self.firmwares
-            if self.signing_status(version=entry["name"])
+            *filter(self.signing_status, [entry["build"] for entry in self.firmwares])
         ]
 
-        return sorted(zip(signed_version_names, signed_builds))
+        return sorted(zip(signed_names, signed_builds))
 
     async def download_manifest(
         self,
         device: DeviceInfo,
+        *,
         version: str,
         build: str,
         indicate: bool = True,
@@ -146,7 +143,7 @@ class Firmwares:
             for entry in self.firmwares:
                 if build == entry["build"]:
                     ipsw_url = entry["ipsw"]
-                    bm_url = entry["build_manifest"]
+                    bm_url = entry["buildmanifest"]
 
             try:
                 async with httpx.AsyncClient(timeout=TIMEOUT) as client:

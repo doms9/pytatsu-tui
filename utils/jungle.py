@@ -8,6 +8,7 @@ import subprocess
 import sys
 from collections.abc import Generator
 from contextlib import contextmanager
+from distutils.util import strtobool
 from io import TextIOWrapper
 from pathlib import Path
 from time import sleep
@@ -298,12 +299,12 @@ def list_saved_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
             # saved with tsschecker
             if f"{device.ecid}_{device.model.lower()}" in blob_1st_half.lower():
                 build = blob_2nd_half.split("_")[0]
-                version_name, _, version_build = firmwares.dissect(version=build)
+                version_name, _, version_build = firmwares.dissect(build)
 
             # saved with pytatsu
             else:
                 build = os.path.splitext(blob_2nd_half)[0]
-                version_name, _, version_build = firmwares.dissect(version=build)
+                version_name, _, version_build = firmwares.dissect(build)
 
             # For the iOS versions that aren't on m1sta's api...
             if version_name is None:
@@ -382,15 +383,39 @@ def list_signed_vers(device: DeviceInfo, firmwares: Firmwares) -> bool:
     return False
 
 
-def delete_manifests(board: str, device_number: int) -> None:
-    send2trash(
-        [plists for plists in bm_dir().iterdir() if board in f"{plists!s}"],
+def delete_manifests(device_number: int, board: str) -> None:
+    """
+    Delete all BuildManifest.plist files for the given device number
+    """
+
+    clear_terminal()
+
+    print(
+        f"By proceeding, all BuildManifests for DEVICE {device_number} will be {colored('deleted', 'red', attrs=['underline'])}"
     )
 
-    wait_to_cont(
-        f"{SUCCESS} deleted all BuildManifests files for DEVICE {device_number}!",
-        clear=True,
-    )
+    try:
+        confirm = strtobool(
+            input(f"\nAre you sure you want to continue?\n\n[Y/N]: ").strip()
+        )
+    except ValueError:
+        confirm = 0
+
+    if confirm:
+        send2trash(
+            plists := [plist for plist in bm_dir().iterdir() if board in f"{plist}"],
+        )
+
+        wait_to_cont(
+            f"{SUCCESS} deleted {len(plists)} BuildManifest files for DEVICE {device_number}!",
+            clear=True,
+        )
+
+    else:
+        wait_to_cont(
+            "Aborting...",
+            clear=True,
+        )
 
 
 @contextmanager
@@ -409,7 +434,7 @@ def hide_prints() -> Generator[TextIOWrapper, None, None]:
         sys.stdout = og_stdout
 
 
-def tss_request(device: DeviceInfo, version: str, build: str) -> None:
+def tss_request(device: DeviceInfo, *, version: str, build: str) -> None:
     """
     Send a post request to Apple's TSS for the given device
 
@@ -518,7 +543,7 @@ def main(selected_device: int) -> NoReturn:
                     main(device_selection())
 
             case "9":
-                delete_manifests(device.board, device.number)
+                delete_manifests(device.number, device.board)
 
             case _:
                 print("\nExiting...")
