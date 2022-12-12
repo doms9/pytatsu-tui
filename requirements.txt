@@ -357,9 +357,9 @@ pycryptodome==3.16.0 \
     --hash=sha256:e061311b02cefb17ea93d4a5eb1ad36dca4792037078b43e15a653a0a4478ead \
     --hash=sha256:e750a21d8a265b1f9bfb1a28822995ea33511ba7db5e2b55f41fb30781d0d073
     # via pyimg4
-pyimg4==0.6.3 \
-    --hash=sha256:9c03ab7b57c4d790780eedb934578844380cbd8fe7b923703619da42bf08337a \
-    --hash=sha256:dc5bdba410bab2e0ae9d6b09191aa6ef01f5bb4a6e9057fd09475d1feac5a41f
+pyimg4==0.7 \
+    --hash=sha256:e2eabd3e8115468fc0ab6c795861d557fe483dbd5935ee8fe26b4d8dff68f0c2 \
+    --hash=sha256:ffa5c93a0cae2cbb176bf41c439a15f3a9772f931382632222a6a53d64b4530f
     # via -r requirements.in
 pyliblzfse==0.4.1 \
     --hash=sha256:0c2d164869d01253569f1a9f835d27857d7bd209e3d225d8e3b2097aab2df4fe \
