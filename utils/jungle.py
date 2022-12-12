@@ -67,8 +67,8 @@ def save_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
         if list_signed_vers(device, firmwares):
             print("\nPlease wait", end="")
 
-            for ios_versions, _ in firmwares.all_signed:
-                version_num, version_build = firmwares.dissect(ios_versions)[1:]
+            for ios_versions in firmwares.all_signed:
+                version_num, version_build = firmwares.dissect(ios_versions[0])[1:]
 
                 asyncio.run(
                     firmwares.download_manifest(
@@ -299,14 +299,14 @@ def list_saved_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
             # saved with tsschecker
             if f"{device.ecid}_{device.model.lower()}" in blob_1st_half.lower():
                 build = blob_2nd_half.split("_")[0]
-                version_name, _, version_build = firmwares.dissect(build)
 
-            # saved with pytatsu
+            # pytatsu
             else:
                 build = os.path.splitext(blob_2nd_half)[0]
-                version_name, _, version_build = firmwares.dissect(build)
 
-            # For the iOS versions that aren't on m1sta's api...
+            version_name, version_build = firmwares.dissect(build)[::2]
+
+            # For the iOS versions that aren't scraped (yet)
             if version_name is None:
 
                 # saved with tsschecker
@@ -314,7 +314,7 @@ def list_saved_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
                     version_name = blob_1st_half.split("_")[3]
                     version_build = blob_2nd_half.split("_")[0]
 
-                # saved with pytatsu
+                # pytatsu
                 else:
                     version_name = blob_1st_half
                     version_build = blob_2nd_half.split(".")[0]

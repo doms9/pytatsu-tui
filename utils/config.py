@@ -62,75 +62,189 @@ def wait_to_exit(*args, clear: bool = False) -> NoReturn:
     raise SystemExit
 
 
-def config_dir() -> Path:
+def get_cfg_path() -> Path:
     """
-    Path to where the config file, blobs, and buildmanifests are saved
+    Create path.txt if it doesn't exist
     """
 
-    config_dir_text = Path("./path.txt").resolve()
+    path_txt = Path("./path.txt").resolve()
 
-    if not config_dir_text.exists():
-        clear_terminal()
+    clear_terminal()
 
-        print("Please select a directory to save your blobs\n")
+    print("Please select a directory to save your blobs\n")
 
-        Tk().withdraw()
+    Tk().withdraw()
 
-        input_directory = filedialog.askdirectory(
-            initialdir=Path.cwd(),
+    directory = Path(
+        filedialog.askdirectory(
+            initialdir=Path.cwd().parent,
             title="Choose a directory for your blobs",
         )
-
-        try:
-
-            directory = Path(input_directory)
-
-            config_dir_text.write_text(f"{directory}", encoding="utf-8")
-
-            (directory / "permissionchecking12345").mkdir()
-
-            (directory / "permissionchecking12345").rmdir()
-
-        except PermissionError:
-            config_dir_text.unlink()
-
-            wait_to_exit(
-                "Please select a directory where you have read and write permissions.",
-                clear=True,
-            )
-
-        except TypeError:
-            wait_to_exit(
-                "Please re-run and select a directory to save your config file and blobs.",
-                clear=True,
-            )
-
-        return directory.resolve()
+    )
 
     try:
-        directory = Path(config_dir_text.read_text(encoding="utf-8").strip())
+        path_txt.write_text(f"{directory}", encoding="utf-8")
 
         (directory / "permissionchecking12345").mkdir()
 
         (directory / "permissionchecking12345").rmdir()
 
     except PermissionError:
-        config_dir_text.unlink()
+        path_txt.unlink()
+
+        wait_to_exit(
+            "Please select a directory where you have read and write permissions.",
+            clear=True,
+        )
+
+    except TypeError:
+        wait_to_exit(
+            "Please select a directory to save your config file.",
+            clear=True,
+        )
+
+    return directory.resolve()
+
+
+def config_dir() -> Path:
+    """
+    Path to where the config file, blobs, and buildmanifests are saved
+    """
+
+    path_txt = Path("./path.txt").resolve()
+
+    if not path_txt.exists():
+        return get_cfg_path()
+
+    try:
+        directory = Path(path_txt.read_text(encoding="utf-8").strip())
+
+        (directory / "permissionchecking12345").mkdir()
+
+        (directory / "permissionchecking12345").rmdir()
+
+    except PermissionError:
+        path_txt.unlink()
 
         wait_to_exit(
             "Please select a new directory where you have read and write permissions.",
             clear=True,
         )
 
-    except FileNotFoundError:
-        config_dir_text.unlink()
+    except (FileNotFoundError, OSError):
+        path_txt.unlink()
 
         wait_to_exit(
-            "Please select a new directory to save your config file and blobs.",
+            "Please select a new directory to save your config file.",
             clear=True,
         )
 
     return directory.resolve()
+
+
+def create_config() -> None:
+    """
+    Create a config file if it doesn't exist
+    """
+    # sourcery skip: raise-from-previous-error
+
+    if config_file().is_file():
+        return
+
+    clear_terminal()
+
+    print("Config not found, creating a new one...\n")
+
+    amount_of_devices = input("How many devices would you like to add?\n\n: ")
+
+    try:
+        devices = int(amount_of_devices)
+    except ValueError:
+        if amount_of_devices == "":
+            raise SystemExit
+
+        wait_to_exit(
+            "Please enter the number of devices as an integer, not a string/float.",
+            clear=True,
+        )
+
+    for i in range(1, devices + 1):
+        config_entries(i)
+
+    wait_to_cont(
+        f"{SUCCESS} added {devices} device(s) to the config!",
+        clear=True,
+    )
+
+
+def add_device() -> None:
+    """
+    Add device(s) to the config
+    """
+
+    clear_terminal()
+
+    total_devices = num_of_devices()[-1]
+
+    amount_of_devices = input("How many new devices would you like to add?\n\n: ")
+
+    try:
+        devices = int(amount_of_devices)
+    except ValueError:
+        if amount_of_devices == "":
+            return
+
+        wait_to_cont(
+            "Please enter the number of new devices as an integer.",
+            clear=True,
+        )
+        return
+
+    for i in range(1, devices + 1):
+        config_entries(i, cfg_exists=True, total=total_devices)
+
+    wait_to_cont(
+        f"{SUCCESS} added {devices} device(s) to the config!",
+        clear=True,
+    )
+
+
+def config_entries(number: int, cfg_exists: bool = False, total: int = 0) -> None:
+    """
+    Input entries into the config file
+    """
+    # sourcery skip: merge-dict-assign
+
+    if cfg_exists:
+        number += total
+
+    clear_terminal()
+
+    print(
+        "ENTERING INFORMATION FOR",
+        f"{colored(f'DEVICE {number}', attrs=['underline'])}",
+    )
+
+    config_prsr[f"DEVICE {number}"] = {}
+
+    config_prsr[f"DEVICE {number}"]["model"] = input("\nDevice Identifier?\n\n: ")
+
+    config_prsr[f"DEVICE {number}"]["board"] = input("\nBoard Configuration?\n\n: ")
+
+    config_prsr[f"DEVICE {number}"]["ecid"] = input(
+        "\nExclusive Chip Identification (ECID)?\n\n: "
+    )
+
+    config_prsr[f"DEVICE {number}"]["generator"] = input(
+        "\nGenerator? (Required for A12+)\n\n: "
+    )
+
+    config_prsr[f"DEVICE {number}"]["apnonce"] = input(
+        "\nApNonce? (Required for A12+)\n\n: "
+    )
+
+    with config_file().open("w", encoding="utf-8") as f:
+        config_prsr.write(f)
 
 
 def config_file() -> Path:
@@ -157,68 +271,6 @@ def blob_dir(device_number: int) -> Path:
     return config_dir() / f"DEVICE {device_number}"
 
 
-def create_config() -> None:
-    """
-    Create a config file if it doesn't exist
-    """
-
-    while not config_file().is_file():
-        clear_terminal()
-
-        print("Config not found, creating a new one...\n")
-
-        amount_of_devices = input("How many devices would you like to add?\n\n: ")
-
-        try:
-            devices = int(amount_of_devices)
-        except ValueError:
-            if amount_of_devices == "":
-                raise SystemExit
-
-            wait_to_cont(
-                "Please enter the number of devices as an integer, not a string/float.",
-                clear=True,
-            )
-            continue
-
-        for new in range(1, devices + 1):
-            clear_terminal()
-
-            print(
-                "ENTERING INFORMATION FOR",
-                f"{colored(f'DEVICE {new}', attrs=['underline'])}",
-            )
-
-            config_prsr[f"DEVICE {new}"] = {}
-
-            config_prsr[f"DEVICE {new}"]["model"] = input("\nDevice Identifier?\n\n: ")
-
-            config_prsr[f"DEVICE {new}"]["board"] = input(
-                "\nBoard Configuration?\n\n: "
-            )
-
-            config_prsr[f"DEVICE {new}"]["ecid"] = input(
-                "\nExclusive Chip Identification (ECID)?\n\n: "
-            )
-
-            config_prsr[f"DEVICE {new}"]["generator"] = input(
-                "\nGenerator? (Required for A12+)\n\n: "
-            )
-
-            config_prsr[f"DEVICE {new}"]["apnonce"] = input(
-                "\nApNonce? (Required for A12+)\n\n: "
-            )
-
-        with config_file().open("w", encoding="utf-8") as a:
-            config_prsr.write(a)
-
-        wait_to_cont(
-            f"{SUCCESS} added {devices} device(s) to the config!",
-            clear=True,
-        )
-        break
-
-
 def num_of_devices() -> list[int]:
     """
     Return the numbers of devices in the config
@@ -229,68 +281,7 @@ def num_of_devices() -> list[int]:
     return [devices[0] for devices in enumerate(config_prsr.sections(), start=1)]
 
 
-def add_device() -> None:
-    """
-    Add device(s) to the config
-    """
-
-    clear_terminal()
-
-    existing = num_of_devices()[-1]
-
-    amount_of_devices = input("How many new devices would you like to add?\n\n: ")
-
-    try:
-        devices = int(amount_of_devices)
-    except ValueError:
-        if amount_of_devices == "":
-            return
-
-        wait_to_cont(
-            "Please enter the number of new devices as an integer.",
-            clear=True,
-        )
-        return
-
-    for i in range(1, devices + 1):
-        new = existing + i
-
-        clear_terminal()
-
-        print(
-            "ENTERING INFORMATION FOR",
-            f"{colored(f'DEVICE {new}', attrs=['underline'])}",
-        )
-
-        config_prsr[f"DEVICE {new}"] = {}
-
-        config_prsr[f"DEVICE {new}"]["model"] = input("\nDevice Identifier?\n\n: ")
-
-        config_prsr[f"DEVICE {new}"]["board"] = input("\nBoard Configuration?\n\n: ")
-
-        config_prsr[f"DEVICE {new}"]["ecid"] = input(
-            "\nExclusive Chip Identification (ECID)\n\n: "
-        )
-
-        config_prsr[f"DEVICE {new}"]["generator"] = input(
-            "\nGenerator? (Required for A12+)\n\n: "
-        )
-
-        config_prsr[f"DEVICE {new}"]["apnonce"] = input(
-            "\nApNonce? (Required for A12+)\n\n: "
-        )
-
-    with config_file().open("w", encoding="utf-8") as b:
-        config_prsr.write(b)
-
-    wait_to_cont(
-        f"{SUCCESS} added {devices} device(s) to the config!",
-        clear=True,
-    )
-    return
-
-
-def rm_device() -> bool:
+def rm_device() -> int:
     """
     Remove device(s) from the config
 

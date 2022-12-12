@@ -22,8 +22,10 @@ def device_selection() -> int:
     """
     Select a device from the config
     """
+    # sourcery skip: raise-from-previous-error
 
     while True:
+        config_prsr.read(config_file())
 
         clear_terminal()
 
@@ -104,10 +106,7 @@ def get_device_info(device: int) -> tuple[int, str, str, int, str, str]:
             )
 
         elif not value.isalnum() and key != "model":
-            if key in ("apnonce", "generator") and len(value) == 0:
-                pass
-
-            else:
+            if key not in ("apnonce", "generator") and len(value) != 0:
                 wait_to_exit(
                     f"{ERROR} Do not use any spaces/special characters",
                     f"in the {key.upper()} of DEVICE {device}",

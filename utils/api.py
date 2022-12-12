@@ -109,13 +109,13 @@ async def __ios_devices() -> None:
             clear=True,
         )
 
-    entry = {}
-
     if device_info.status_code == 200:
         devices = device_info.json()
 
         with devices_file.open("w", encoding="utf-8") as a:
             json.dump({"devices": []}, a, indent=2)
+
+        entry = {}
 
         for device in devices:
             for x in device["boards"]:

@@ -44,11 +44,14 @@ class AllDevices:
 
         model, board = model.lower(), board.lower()
 
-        for device in self.devices:
-            if (model, board) == (device["identifier"], device["board"]):
-                return device["name"]
-
-        return None
+        return next(
+            (
+                device["name"]
+                for device in self.devices
+                if (model, board) == (device["identifier"], device["board"])
+            ),
+            None,
+        )
 
 
 @attrs.define
@@ -76,7 +79,7 @@ class Firmwares:
         version = version.lower()
 
         for entry in self.firmwares:
-            if version == entry["name"].lower() or version == entry["build"].lower():
+            if version in (entry["name"].lower(), entry["build"].lower()):
                 return [entry["name"], entry["base"], entry["build"]]
 
         return [None for _ in range(3)]
@@ -95,11 +98,14 @@ class Firmwares:
 
         version = version.lower()
 
-        for entry in self.firmwares:
-            if version == entry["name"].lower() or version == entry["build"].lower():
-                return entry["signed"]
-
-        return None
+        return next(
+            (
+                entry["signed"]
+                for entry in self.firmwares
+                if version in [entry["name"].lower(), entry["build"].lower()]
+            ),
+            None,
+        )
 
     @property
     def all_signed(self) -> list[tuple[str, str]]:
@@ -135,43 +141,44 @@ class Firmwares:
         `indicate` is to optionally print a dowloading indicator
         """
 
-        if not (bm_dir() / f"{version}-{build}-{device.board}.plist").is_file():
+        if (bm_dir() / f"{version}-{build}-{device.board}.plist").is_file():
+            return
 
-            if indicate:
-                print("\nDownloading BuildManifest...")
+        if indicate:
+            print("\nDownloading BuildManifest...")
 
-            for entry in self.firmwares:
-                if build == entry["build"]:
-                    ipsw_url = entry["ipsw"]
-                    bm_url = entry["buildmanifest"]
+        for entry in self.firmwares:
+            if build == entry["build"]:
+                ipsw_url = entry["ipsw"]
+                bm_url = entry["buildmanifest"]
 
-            try:
-                async with httpx.AsyncClient(timeout=TIMEOUT) as client:
-                    bm_request = await client.get(bm_url)
+        try:
+            async with httpx.AsyncClient(timeout=TIMEOUT) as client:
+                bm_request = await client.get(bm_url)
 
-            except httpx.ConnectError:
-                wait_to_exit(
-                    f"{ERROR} Please check your internet connection and try again later.",
-                    clear=True,
-                )
+        except httpx.ConnectError:
+            wait_to_exit(
+                f"{ERROR} Please check your internet connection and try again later.",
+                clear=True,
+            )
 
-            except httpx.ConnectTimeout:
-                wait_to_exit(
-                    f"{ERROR} Timed out while receiving data from api get request.",
-                    "\n\nPlease try again later.",
-                    clear=True,
-                )
+        except httpx.ConnectTimeout:
+            wait_to_exit(
+                f"{ERROR} Timed out while receiving data from api get request.",
+                "\n\nPlease try again later.",
+                clear=True,
+            )
 
-            if bm_request.status_code == 200:
-                (bm_dir() / f"{version}-{build}-{device.board}.plist").write_bytes(
-                    bm_request.content
-                )
+        if bm_request.status_code == 200:
+            (bm_dir() / f"{version}-{build}-{device.board}.plist").write_bytes(
+                bm_request.content
+            )
 
-            else:
-                with RemoteZip(ipsw_url) as ipsw_file:
-                    ipsw_file.extract("BuildManifest.plist")
+        else:
+            with RemoteZip(ipsw_url) as ipsw_file:
+                ipsw_file.extract("BuildManifest.plist")
 
-                shutil.move(
-                    "./BuildManifest.plist",
-                    bm_dir() / f"{version}-{build}-{device.board}.plist",
-                )
+            shutil.move(
+                "./BuildManifest.plist",
+                bm_dir() / f"{version}-{build}-{device.board}.plist",
+            )
