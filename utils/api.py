@@ -36,7 +36,11 @@ async def __ios_firmwares(model: str) -> None:
                 f"https://api.ipsw.me/v4/device/{model}",
                 params={"type": "ipsw"},
             )
-            beta_api = await client.get(f"https://api.m1sta.xyz/betas/{model}")
+
+            beta_api = await client.get(
+                f"https://api.allorigins.win/raw",
+                params={"url": f"https://api.m1sta.xyz/betas/{model}"},
+            )
 
     except httpx.ConnectError:
         wait_to_exit(
@@ -44,7 +48,7 @@ async def __ios_firmwares(model: str) -> None:
             clear=True,
         )
 
-    except httpx.ConnectTimeout:
+    except (httpx.ConnectTimeout, httpx.ReadTimeout):
         wait_to_exit(
             f"{ERROR} Timed out while receiving data from api get request.",
             "\n\nPlease try again later.",

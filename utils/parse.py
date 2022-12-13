@@ -162,7 +162,7 @@ class Firmwares:
                 clear=True,
             )
 
-        except httpx.ConnectTimeout:
+        except (httpx.ConnectTimeout, httpx.ReadTimeout):
             wait_to_exit(
                 f"{ERROR} Timed out while receiving data from api get request.",
                 "\n\nPlease try again later.",
