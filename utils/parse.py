@@ -113,13 +113,24 @@ class Firmwares:
         Lists all signed iOS version names with their corresponding build identifiers
         """
 
-        signed_names = [
+        signed_names: list[str] = [
             *filter(self.signing_status, [entry["name"] for entry in self.firmwares])
         ]
 
-        signed_builds = [
+        signed_builds: list[str] = [
             *filter(self.signing_status, [entry["build"] for entry in self.firmwares])
         ]
+
+        # if a RC becomes the GM
+        duplicates = {
+            build for build in signed_builds if signed_builds.count(build) > 1
+        }
+
+        for dupe in duplicates:
+            if dupe in signed_builds:
+                vers, build = self.dissect(dupe)[::2]
+                signed_names.remove(vers)
+                signed_builds.remove(build)
 
         return sorted(zip(signed_names, signed_builds))
 

@@ -131,7 +131,7 @@ def config_dir() -> Path:
             clear=True,
         )
 
-    except (FileNotFoundError, OSError):
+    except OSError:
         path_txt.unlink()
 
         wait_to_exit(

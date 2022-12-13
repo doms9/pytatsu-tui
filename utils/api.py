@@ -38,7 +38,7 @@ async def __ios_firmwares(model: str) -> None:
             )
 
             beta_api = await client.get(
-                f"https://api.allorigins.win/raw",
+                "https://api.allorigins.win/raw",
                 params={"url": f"https://api.m1sta.xyz/betas/{model}"},
             )
 
@@ -55,20 +55,19 @@ async def __ios_firmwares(model: str) -> None:
             clear=True,
         )
 
-    if stable_api.status_code == 200:
-        with firmwares_file.open("w", encoding="utf-8") as a:
-            json.dump({"firmwares": []}, a, indent=2)
+    with firmwares_file.open("w", encoding="utf-8") as a:
+        json.dump({"firmwares": []}, a, indent=2)
 
-        with firmwares_file.open(encoding="utf-8") as b:
-            data = json.load(b)
+    with firmwares_file.open(encoding="utf-8") as b:
+        data = json.load(b)
+
+    if stable_api.status_code == beta_api.status_code == 200:
+        for y in beta_api.json():
+            if y != "detail":
+                data["firmwares"].append(y)
 
         for x in stable_api.json()["firmwares"]:
             data["firmwares"].append(x)
-
-        if beta_api.status_code == 200:
-            for y in beta_api.json():
-                if y != "detail":
-                    data["firmwares"].append(y)
 
         for z in data["firmwares"]:
             z["name"] = z.pop("version").replace("[", "").replace("]", "")
