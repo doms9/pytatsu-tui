@@ -127,10 +127,9 @@ class Firmwares:
         }
 
         for dupe in duplicates:
-            if dupe in signed_builds:
-                vers, build = self.dissect(dupe)[::2]
-                signed_names.remove(vers)
-                signed_builds.remove(build)
+            vers, build = self.dissect(dupe)[::2]
+            signed_names.remove(vers)
+            signed_builds.remove(build)
 
         return sorted(zip(signed_names, signed_builds))
 

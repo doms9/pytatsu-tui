@@ -38,8 +38,7 @@ async def __ios_firmwares(model: str) -> None:
             )
 
             beta_api = await client.get(
-                "https://api.allorigins.win/raw",
-                params={"url": f"https://api.m1sta.xyz/betas/{model}"},
+                f"https://api.m1sta.xyz/betas/{model}",
             )
 
     except httpx.ConnectError:
@@ -50,7 +49,7 @@ async def __ios_firmwares(model: str) -> None:
 
     except (httpx.ConnectTimeout, httpx.ReadTimeout):
         wait_to_exit(
-            f"{ERROR} Timed out while receiving data from api get request.",
+            f"{ERROR} Timed out while receiving data from get requests.",
             "\n\nPlease try again later.",
             clear=True,
         )
@@ -62,12 +61,12 @@ async def __ios_firmwares(model: str) -> None:
         data = json.load(b)
 
     if stable_api.status_code == beta_api.status_code == 200:
+        for x in stable_api.json()["firmwares"]:
+            data["firmwares"].append(x)
+
         for y in beta_api.json():
             if y != "detail":
                 data["firmwares"].append(y)
-
-        for x in stable_api.json()["firmwares"]:
-            data["firmwares"].append(x)
 
         for z in data["firmwares"]:
             z["name"] = z.pop("version").replace("[", "").replace("]", "")
@@ -83,7 +82,8 @@ async def __ios_firmwares(model: str) -> None:
 
     else:
         wait_to_exit(
-            f'{ERROR} api get request returned status code "{stable_api.status_code}"',
+            f"{ERROR} Stable ({stable_api.status_code}) or Beta ({beta_api.status_code})",
+            "API returned a status code other than 200.",
             f'\n\n"{model}" may not be a valid Apple device.'
             "\n\nPlease edit this or try again later.",
             clear=True,
@@ -107,7 +107,7 @@ async def __ios_devices() -> None:
 
     except httpx.ConnectTimeout:
         wait_to_exit(
-            f"{ERROR} Timed out while receiving data from api get request.",
+            f"{ERROR} Timed out while receiving data from get requests.",
             "\n\nPlease try again later.",
             clear=True,
         )
@@ -137,7 +137,7 @@ async def __ios_devices() -> None:
 
     else:
         wait_to_exit(
-            f'{ERROR} api get request returned status code "{device_info.status_code}"',
+            f'{ERROR} Stable API returned status code {device_info.status_code}',
             "\n\nPlease try again later.",
             clear=True,
         )
