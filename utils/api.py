@@ -11,7 +11,7 @@ firmwares_file = Path("./firmwares.json")
 
 devices_file = Path("./devices.json")
 
-TIMEOUT = httpx.Timeout(10.0)
+TIMEOUT = httpx.Timeout(15.0)
 
 
 def request_apis(model: str) -> asyncio.Future[tuple[None, None]]:
@@ -82,7 +82,7 @@ async def __ios_firmwares(model: str) -> None:
 
     else:
         wait_to_exit(
-            f"{ERROR} Stable ({stable_api.status_code}) or Beta ({beta_api.status_code})",
+            f"{ERROR} Stable ({stable_api.status_code})/Beta ({beta_api.status_code})",
             "API returned a status code other than 200.",
             f'\n\n"{model}" may not be a valid Apple device.'
             "\n\nPlease edit this or try again later.",
@@ -137,7 +137,7 @@ async def __ios_devices() -> None:
 
     else:
         wait_to_exit(
-            f'{ERROR} Stable API returned status code {device_info.status_code}',
+            f"{ERROR} Stable API returned status code {device_info.status_code}",
             "\n\nPlease try again later.",
             clear=True,
         )
