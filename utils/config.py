@@ -2,7 +2,6 @@ import platform
 import shutil
 import subprocess
 from configparser import ConfigParser
-from distutils.util import strtobool
 from pathlib import Path
 from tkinter import Tk, filedialog
 from typing import NoReturn
@@ -26,6 +25,25 @@ def clear_terminal() -> int:
         "cls" if platform.system() == "Windows" else "clear",
         shell=True,
     )
+
+
+def strtobool(value: str) -> bool:
+    """Convert a string value into a boolean.
+
+    Example::
+
+        if value in ("y", "yes", "t", "true", "on", "1"):
+            return True
+        else:
+            return False
+    """
+
+    value = value.lower().strip()
+
+    if value in ("y", "yes", "t", "true", "on", "1"):
+        return True
+
+    return False
 
 
 def wait_to_cont(*args, clear: bool = False) -> None:
@@ -201,7 +219,11 @@ def add_device() -> None:
         return
 
     for i in range(1, devices + 1):
-        config_entries(i, cfg_exists=True, total=total_devices)
+        config_entries(
+            i,
+            cfg_exists=True,
+            total=total_devices,
+        )
 
     wait_to_cont(
         f"{SUCCESS} added {devices} device(s) to the config!",
@@ -209,7 +231,11 @@ def add_device() -> None:
     )
 
 
-def config_entries(number: int, cfg_exists: bool = False, total: int = 0) -> None:
+def config_entries(
+    number: int,
+    cfg_exists: bool = False,
+    total: int = 0,
+) -> None:
     """
     Input entries into the config file
     """
@@ -281,18 +307,16 @@ def num_of_devices() -> list[int]:
     return [devices[0] for devices in enumerate(config_prsr.sections(), start=1)]
 
 
-def rm_device() -> int:
+def rm_device() -> bool | None:
     """
     Remove device(s) from the config
 
-    Returns `1 (True)` if a device was removed
+    Returns `True` if a device was removed
 
-    Returns `0 (False)` otherwise
+    Returns `False/None` otherwise
     """
 
     clear_terminal()
-
-    confirm = 0
 
     print("Which device would you like to remove?\n")
 
@@ -306,13 +330,13 @@ def rm_device() -> int:
         device = int(selected_device)
     except ValueError:
         if selected_device == "":
-            return confirm
+            return
 
         wait_to_cont(
             "Please enter an integer from the list of devices.",
             clear=True,
         )
-        return confirm
+        return
 
     if device in num_of_devices():
         print(
@@ -320,35 +344,29 @@ def rm_device() -> int:
             f"will be {colored('deleted', 'red', attrs=['underline'])}\n",
         )
 
+        confirm = strtobool(input("Are you sure you want to continue?\n\n[Y/N]: "))
+
+        if confirm:
+            delete_blob_dirs(device)
+
+            wait_to_cont(
+                f"{SUCCESS} deleted DEVICE {device}!",
+                clear=True,
+            )
+
+        else:
+            wait_to_cont(
+                "Aborting...",
+                clear=True,
+            )
+
+        return confirm
+
     else:
         wait_to_cont(
             f"DEVICE {colored(device, 'red')} does not exist.",
             clear=True,
         )
-        return confirm
-
-    try:
-        confirm = strtobool(
-            input("Are you sure you want to continue?\n\n[Y/N]: ").strip()
-        )
-    except ValueError:
-        confirm = 0
-
-    if confirm:
-        delete_blob_dirs(device)
-
-        wait_to_cont(
-            f"{SUCCESS} deleted DEVICE {device}!",
-            clear=True,
-        )
-
-    else:
-        wait_to_cont(
-            "Aborting...",
-            clear=True,
-        )
-
-    return confirm
 
 
 def delete_blob_dirs(device: int) -> None:

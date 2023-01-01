@@ -9,7 +9,7 @@ from .api import TIMEOUT
 from .config import ERROR, bm_dir, wait_to_exit
 
 
-@attrs.mutable
+@attrs.define
 class DeviceInfo:
     """
     Put information for the selected device into a class object

@@ -8,7 +8,6 @@ import subprocess
 import sys
 from collections.abc import Generator
 from contextlib import contextmanager
-from distutils.util import strtobool
 from io import TextIOWrapper
 from pathlib import Path
 from time import sleep
@@ -30,6 +29,7 @@ from .config import (
     config_file,
     create_config,
     rm_device,
+    strtobool,
     wait_to_cont,
     wait_to_exit,
 )
@@ -394,12 +394,12 @@ def delete_manifests(device_number: int, board: str) -> None:
         f"By proceeding, all BuildManifests for DEVICE {device_number} will be {colored('deleted', 'red', attrs=['underline'])}"
     )
 
-    try:
-        confirm = strtobool(
-            input(f"\nAre you sure you want to continue?\n\n[Y/N]: ").strip()
-        )
-    except ValueError:
-        confirm = 0
+    i = input("\nAre you sure you want to continue?\n\n[Y/N]: ")
+
+    if i.strip() == "":
+        return
+
+    confirm = strtobool(i)
 
     if confirm:
         send2trash(
@@ -485,7 +485,7 @@ def main(selected_device: int) -> NoReturn:
 
         device.name = apple_devices.check(device.model, device.board)
 
-        if device.name is None:
+        if device.name == None:
             wait_to_exit(
                 f"{ERROR} Invalid BOARD for DEVICE {device.number}",
                 f'\n\nThe board configuration for "{device.model}" is NOT "{device.board}"'

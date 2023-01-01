@@ -105,7 +105,7 @@ async def __ios_devices() -> None:
             clear=True,
         )
 
-    except httpx.ConnectTimeout:
+    except (httpx.ConnectTimeout, httpx.ReadTimeout):
         wait_to_exit(
             f"{ERROR} Timed out while receiving data from get requests.",
             "\n\nPlease try again later.",

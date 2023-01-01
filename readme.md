@@ -52,7 +52,7 @@ For every device you have, you'll be asked to provide the following information:
 - [Device Model and Board Configuration](./apple_devices.md)
 - [Exclusive Chip Identification](https://www.theiphonewiki.com/wiki/ECID#Getting_the_ECID) (Decimal and Hex formats supported)
 - [ApNonce](https://gist.github.com/m1stadev/5464ea557c2b999cb9324639c777cd09#getting-a-generator-apnonce-pair-jailbroken) (Required for A12+)
-  - This script **DOES NOT** freeze your ApNonce if your device isn't jailbroken, do that beforehand.
+  - This script **<ins>DOES NOT</ins>** freeze your ApNonce if your device isn't jailbroken, do that beforehand.
 - [Generator](https://www.idownloadblog.com/2021/03/08/futurerestore-guide-1-generator/) (Required for A12+)
   - (Eg. 0x1111111111111111 for [unc0ver](https://unc0ver.dev/), 0xbd34a880be0b53f3 for [Electra](https://coolstar.org/electra/)/[Chimera](https://chimera.coolstar.org/)/[Odyssey](https://theodyssey.dev/)/[Taurine](https://taurine.app/)/[Cheyote](https://www.cheyote.io/))
 
