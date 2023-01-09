@@ -38,12 +38,7 @@ def strtobool(value: str) -> bool:
             return False
     """
 
-    value = value.lower().strip()
-
-    if value in ("y", "yes", "t", "true", "on", "1"):
-        return True
-
-    return False
+    return value.lower().strip() in {"y", "yes", "t", "true", "on", "1"}
 
 
 def wait_to_cont(*args, clear: bool = False) -> None:
@@ -178,7 +173,7 @@ def create_config() -> None:
     try:
         devices = int(amount_of_devices)
     except ValueError:
-        if amount_of_devices == "":
+        if amount_of_devices.strip() == "":
             raise SystemExit
 
         wait_to_exit(
@@ -209,7 +204,7 @@ def add_device() -> None:
     try:
         devices = int(amount_of_devices)
     except ValueError:
-        if amount_of_devices == "":
+        if amount_of_devices.strip() == "":
             return
 
         wait_to_cont(
@@ -329,7 +324,7 @@ def rm_device() -> bool | None:
     try:
         device = int(selected_device)
     except ValueError:
-        if selected_device == "":
+        if selected_device.strip() == "":
             return
 
         wait_to_cont(
@@ -344,9 +339,12 @@ def rm_device() -> bool | None:
             f"will be {colored('deleted', 'red', attrs=['underline'])}\n",
         )
 
-        confirm = strtobool(input("Are you sure you want to continue?\n\n[Y/N]: "))
+        confirm = input("Are you sure you want to continue?\n\n[Y/N]: ")
 
-        if confirm:
+        if confirm.strip() == "":
+            return
+
+        elif confirmed := strtobool(confirm):
             delete_blob_dirs(device)
 
             wait_to_cont(
@@ -360,7 +358,7 @@ def rm_device() -> bool | None:
                 clear=True,
             )
 
-        return confirm
+        return confirmed
 
     else:
         wait_to_cont(

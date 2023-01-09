@@ -42,7 +42,7 @@ def device_selection() -> int:
         try:
             device = int(selected_device)
         except ValueError:
-            if selected_device == "":
+            if selected_device.strip() == "":
                 raise SystemExit
 
             wait_to_cont(
@@ -68,9 +68,9 @@ def isdex(value: str) -> bool:
     Determine if value is a decimal/hex string
     """
 
-    value = value.strip("0x")
-
-    return all(charctrs in set(string.hexdigits) for charctrs in value)
+    return all(
+        charctrs in set(string.hexdigits) for charctrs in value.removeprefix("0x")
+    )
 
 
 def get_device_info(device: int) -> tuple[int, str, str, int, str, str]:

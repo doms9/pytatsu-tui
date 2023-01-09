@@ -42,13 +42,12 @@ class AllDevices:
                 return "iPhone 11 Pro Max"
         """
 
-        model, board = model.lower(), board.lower()
-
         return next(
             (
                 device["name"]
                 for device in self.devices
-                if (model, board) == (device["identifier"], device["board"])
+                if (model.lower(), board.lower())
+                == (device["identifier"], device["board"])
             ),
             None,
         )
@@ -76,10 +75,8 @@ class Firmwares:
                 return ["15.6 beta", "15.6", "19G5027e"]
         """
 
-        version = version.lower()
-
         for entry in self.firmwares:
-            if version in (entry["name"].lower(), entry["build"].lower()):
+            if version.lower() in (entry["name"].lower(), entry["build"].lower()):
                 return [entry["name"], entry["base"], entry["build"]]
 
         return [None for _ in range(3)]
@@ -96,13 +93,11 @@ class Firmwares:
                 return True | False
         """
 
-        version = version.lower()
-
         return next(
             (
                 entry["signed"]
                 for entry in self.firmwares
-                if version in [entry["name"].lower(), entry["build"].lower()]
+                if version.lower() in (entry["name"].lower(), entry["build"].lower())
             ),
             None,
         )

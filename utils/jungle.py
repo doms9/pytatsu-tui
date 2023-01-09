@@ -57,11 +57,14 @@ def save_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
     if all_or_one == "":
         return
 
-    if all_or_one not in ("a", "m"):
-        wait_to_cont(f'\n"{colored(all_or_one, "red")}" is not a valid option.')
+    elif all_or_one not in ("a", "m"):
+        wait_to_cont(
+            f'"{colored(all_or_one, "red")}" is not a valid option.',
+            clear=True,
+        )
         return
 
-    if all_or_one == "a":
+    elif all_or_one == "a":
         clear_terminal()
 
         if list_signed_vers(device, firmwares):
@@ -98,19 +101,20 @@ def save_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
             "Please enter an iOS version name or build identifier\n\n: "
         )
 
-        if manual_version == "":
+        if manual_version.strip() == "":
             return
 
         version_name, version_num, version_build = firmwares.dissect(manual_version)
 
         if version_name is None:
             wait_to_cont(
-                f'\n"{colored(manual_version, "red")}"',
+                f'"{colored(manual_version, "red")}"',
                 f"is not a valid iOS version/build identifier for the {device.name}.",
+                clear=True,
             )
             return
 
-        if firmwares.signing_status(version_name):
+        elif firmwares.signing_status(version_name):
             print(
                 f"\nSigning status of iOS {version_name} ({version_build})",
                 f"for the {device.name} : {colored('TRUE', 'green')}",
@@ -150,22 +154,23 @@ def view_blob_info(device: DeviceInfo, firmwares: Firmwares) -> None:
 
     manual_version = input("\n: ")
 
-    if manual_version == "":
+    if manual_version.strip() == "":
         return
 
     version_name, version_num, version_build = firmwares.dissect(manual_version)
 
     if version_name is None:
         wait_to_cont(
-            f'\n"{colored(manual_version, "red")}"',
+            f'"{colored(manual_version, "red")}"',
             f"is not a valid iOS version/build identifier for the {device.name}.",
+            clear=True,
         )
         return
 
     for file in os.listdir(blob_dir(device.number)):
         if (
             file.startswith(f"{device.ecid}")
-            and f"{version_num}-{version_build}" in file
+            and file.find(f"{version_num}-{version_build}") != -1
             and file.endswith(".shsh2")
         ) or file == f"{version_num}-{version_build}.shsh2":
 
@@ -263,8 +268,9 @@ def rename_blobs(device: DeviceInfo) -> None:
     blobs_to_be_renamed = []
 
     for file in os.listdir(blob_dir(device.number)):
-        if file.endswith(".shsh2") and (
-            f"{device.ecid}_{device.model.lower()}" in file.lower()
+        if (
+            file.endswith(".shsh2")
+            and file.lower().find(f"{device.ecid}_{device.model.lower()}") != -1
         ):
             blobs_to_be_renamed.append(file)
 
@@ -297,7 +303,10 @@ def list_saved_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
             blob_1st_half, blob_2nd_half = file.split("-")
 
             # saved with tsschecker
-            if f"{device.ecid}_{device.model.lower()}" in blob_1st_half.lower():
+            if (
+                blob_1st_half.lower().find(f"{device.ecid}_{device.model.lower()}")
+                != -1
+            ):
                 build = blob_2nd_half.split("_")[0]
 
             # pytatsu
@@ -310,7 +319,10 @@ def list_saved_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
             if version_name is None:
 
                 # saved with tsschecker
-                if f"{device.ecid}_{device.model.lower()}" in blob_1st_half.lower():
+                if (
+                    blob_1st_half.lower().find(f"{device.ecid}_{device.model.lower()}")
+                    != -1
+                ):
                     version_name = blob_1st_half.split("_")[3]
                     version_build = blob_2nd_half.split("_")[0]
 
@@ -399,9 +411,7 @@ def delete_manifests(device_number: int, board: str) -> None:
     if i.strip() == "":
         return
 
-    confirm = strtobool(i)
-
-    if confirm:
+    elif strtobool(i):
         send2trash(
             plists := [plist for plist in bm_dir().iterdir() if board in f"{plist}"],
         )
@@ -485,7 +495,7 @@ def main(selected_device: int) -> NoReturn:
 
         device.name = apple_devices.check(device.model, device.board)
 
-        if device.name == None:
+        if device.name is None:
             wait_to_exit(
                 f"{ERROR} Invalid BOARD for DEVICE {device.number}",
                 f'\n\nThe board configuration for "{device.model}" is NOT "{device.board}"'

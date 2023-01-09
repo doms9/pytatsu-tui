@@ -1,11 +1,14 @@
 import os
 from pathlib import Path
 
+import colorama
 import nest_asyncio
 
 from .config import bm_dir, create_config
 from .devices import device_selection
 from .jungle import main
+
+colorama.init()
 
 os.chdir(Path(__file__).parent)
 
