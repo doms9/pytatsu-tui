@@ -11,41 +11,43 @@ A way to save/manage \*OS blobs using [pytatsu](https://github.com/Cryptiiiic/Ta
   - [Tkinter](https://tkdocs.com/tutorial/install.html#installlinux) (If running on Linux)
 - An iPod, iPhone, iPad, or Apple TV
 
+## Getting started
+
+Clone the repository
+
+```sh
+git clone https://github.com/doms9/Tatsu-Manager --depth=1
+
+cd ./Tatsu-Manager
+```
+
+Create a virtual environment (recommended), install requirements, and run
+
+- Windows (Command Prompt)
+
+```cmd
+curl -sSO https://bootstrap.pypa.io/virtualenv.pyz
+
+py virtualenv.pyz -q venv && .\venv\Scripts\activate
+
+python -m pip install -r requirements.txt
+
+python tui.py
+```
+
+- Unix OS (Bash/Z Shell)
+
+```sh
+curl -sSO https://bootstrap.pypa.io/virtualenv.pyz
+
+python3 virtualenv.pyz -q venv && . ./venv/bin/activate
+
+python3 -m pip install -r requirements.txt
+
+python3 tui.py
+```
+
 ## Usage
-
-- Clone the repository
-
-  ```sh
-  git clone https://github.com/doms9/Tatsu-Manager --depth=1
-
-  cd ./Tatsu-Manager
-  ```
-
-- Create a virtual environment (recommended), install requirements, and run
-
-  - Windows (Command Prompt)
-
-  ```cmd
-  curl -sSO https://bootstrap.pypa.io/virtualenv.pyz
-
-  py virtualenv.pyz -q venv && .\venv\Scripts\activate
-
-  python -m pip install -r requirements.txt
-
-  python tui.py
-  ```
-
-  - Unix OS (Bash/Z Shell)
-
-  ```sh
-  curl -sSO https://bootstrap.pypa.io/virtualenv.pyz
-
-  python3 virtualenv.pyz -q venv && . ./venv/bin/activate
-
-  python3 -m pip install -r requirements.txt
-
-  python3 tui.py
-  ```
 
 For every device you have, you'll be asked to provide the following information:
 
@@ -55,6 +57,10 @@ For every device you have, you'll be asked to provide the following information:
   - This script **<ins>DOES NOT</ins>** freeze your ApNonce if your device isn't jailbroken, do that beforehand.
 - [Generator](https://www.idownloadblog.com/2021/03/08/futurerestore-guide-1-generator/) (Required for A12+)
   - (Eg. 0x1111111111111111 for [unc0ver](https://unc0ver.dev/), 0xbd34a880be0b53f3 for [Electra](https://coolstar.org/electra/)/[Chimera](https://chimera.coolstar.org/)/[Odyssey](https://theodyssey.dev/)/[Taurine](https://taurine.app/)/[Cheyote](https://www.cheyote.io/))
+
+## Preview
+
+![](./preview.gif)
 
 ---
 
