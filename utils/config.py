@@ -289,7 +289,18 @@ def blob_dir(device_number: int) -> Path:
     Path to the directory where blobs are saved for the given device
     """
 
-    return config_dir() / f"DEVICE {device_number}"
+    # temp code to bypass exceptions: removing on 2023/2/12
+
+    if (config_dir() / f"DEVICE {device_number}").is_dir():
+
+        (config_dir() / "Blobs").mkdir(exist_ok=True)
+
+        shutil.move(
+            config_dir() / f"DEVICE {device_number}",
+            config_dir() / "Blobs" / f"DEVICE {device_number}",
+        )
+
+    return config_dir() / "Blobs" / f"DEVICE {device_number}"
 
 
 def num_of_devices() -> list[int]:

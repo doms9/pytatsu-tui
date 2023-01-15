@@ -58,7 +58,7 @@ def device_selection() -> int:
             )
             continue
 
-        blob_dir(device).mkdir(0o755, exist_ok=True)
+        blob_dir(device).mkdir(0o755, parents=True, exist_ok=True)
 
         return device
 
