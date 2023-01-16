@@ -382,8 +382,8 @@ pytatsu==0.1.4 \
     --hash=sha256:7cef93baae4069b8e33cb33e357ac7942300ddb051b183e8d3fb910b846f8f9a \
     --hash=sha256:e70033cc01af0cd6af0d264a004ceb7d9856c3b4473c4747a52c9e810379b618
     # via -r requirements.in
-remotezip==0.9.4 \
-    --hash=sha256:8bed7d1fd3f096c15e480d05492d84537ac401b473ba109e0b30611452ac8e57
+remotezip==0.12.0 \
+    --hash=sha256:8e42599ec6477670ea268baceaf29c81835aef4e27f427134f39b0d9cfa388f9
     # via
     #   -r requirements.in
     #   pybmtool
