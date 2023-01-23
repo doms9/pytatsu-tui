@@ -164,6 +164,12 @@
 | Apple Virtual Machine 1                     | VirtualMac2,1     | vma2macosap         |
 | MacBook Air (M2, 2022)                      | Mac14,2           | j413ap              |
 | MacBook Pro (13-inch, M2, 2022)             | Mac14,7           | j493ap              |
+| Mac mini (M2, 2023)                         | Mac14,3           | j473ap              |
+| MacBook Pro (M2 Max, 14-inch, 2023)         | Mac14,5           | j414cap             |
+| MacBook Pro (M2 Max, 16-inch, 2023)         | Mac14,6           | j416cap             |
+| MacBook Pro (M2 Pro, 14-inch, 2023)         | Mac14,9           | j414sap             |
+| Mac mini (M2 Pro, 2023)                     | Mac14,12          | j474sap             |
+| MacBook Pro (M2 Pro, 16-inch, 2023)         | Mac14,10          | j416sap             |
 | Apple Watch (38mm)                          | Watch1,1          | n27aap              |
 | Apple Watch (42mm)                          | Watch1,2          | n28aap              |
 | Apple Watch Series 2 (38mm)                 | Watch2,3          | n74ap               |
