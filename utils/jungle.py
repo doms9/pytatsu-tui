@@ -403,7 +403,8 @@ def delete_manifests(device_number: int, board: str) -> None:
     clear_terminal()
 
     print(
-        f"By proceeding, all BuildManifests for DEVICE {device_number} will be {colored('deleted', 'red', attrs=['underline'])}"
+        f"By proceeding, all BuildManifests for DEVICE {device_number}",
+        f"will be {colored('deleted', 'red', attrs=['underline'])}",
     )
 
     i = input("\nAre you sure you want to continue?\n\n[Y/N]: ")

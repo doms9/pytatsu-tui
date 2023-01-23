@@ -101,9 +101,9 @@ anyio==3.6.2 \
     --hash=sha256:25ea0d673ae30af41a0c442f81cf3b38c7e79fdc7b60335a4c14e05eb0947421 \
     --hash=sha256:fbbe32bd270d2a2ef3ed1c5d45041250284e31fc0a4df4a5a6071842051a51e3
     # via httpcore
-asn1==2.6.0 \
-    --hash=sha256:48b68ebfc898ac4ebd1dc0ced15604e6ca79bb7f0ef17e9bfd059b3c48b2dffb \
-    --hash=sha256:ec33c5ab6a73a21e2f5b998c1af3b06a4011bc334c9cb1f664d2d5b2222bb1d5
+asn1==2.7.0 \
+    --hash=sha256:44c0fc3d28c6a926e4d4959ffbc1bccf37faf4dca07520ba2e9b1b5b36fe0bda \
+    --hash=sha256:feb01dee1f485ecc1b1c0b66762196baaad22c0e1c89861159413b28393fba33
     # via pyimg4
 async-timeout==4.0.2 \
     --hash=sha256:2163e1640ddb52b7a8c80d0a67a08587e5d245cc9c553a74a847056bc2976b15 \

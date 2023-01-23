@@ -182,7 +182,9 @@ def create_config() -> None:
         )
 
     for i in range(1, devices + 1):
-        config_entries(i)
+        config_entries(
+            number=i,
+        )
 
     wait_to_cont(
         f"{SUCCESS} added {devices} device(s) to the config!",
@@ -215,9 +217,9 @@ def add_device() -> None:
 
     for i in range(1, devices + 1):
         config_entries(
-            i,
-            cfg_exists=True,
+            number=i,
             total=total_devices,
+            cfg_exists=True,
         )
 
     wait_to_cont(
@@ -228,8 +230,8 @@ def add_device() -> None:
 
 def config_entries(
     number: int,
-    cfg_exists: bool = False,
     total: int = 0,
+    cfg_exists: bool = False,
 ) -> None:
     """
     Input entries into the config file

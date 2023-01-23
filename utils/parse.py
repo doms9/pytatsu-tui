@@ -116,7 +116,7 @@ class Firmwares:
             *filter(self.signing_status, [entry["build"] for entry in self.firmwares])
         ]
 
-        # if a RC becomes the GM
+        # if the RC becomes the GM
         duplicates = {
             build for build in signed_builds if signed_builds.count(build) > 1
         }
