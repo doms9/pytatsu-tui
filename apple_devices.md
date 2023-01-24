@@ -196,6 +196,7 @@
 | HomePod                                     | AudioAccessory1,1 | b238aap             |
 | HomePod (Unknown Model)                     | AudioAccessory1,2 | b238ap              |
 | HomePod mini                                | AudioAccessory5,1 | b520ap              |
+| HomePod (2nd generation)                    | AudioAccessory6,1 | b620ap              |
 | iBridge2,14                                 | iBridge2,14       | j152fap             |
 | iBridge2,4                                  | iBridge2,4        | j132ap              |
 | iBridge2,10                                 | iBridge2,10       | j213ap              |
