@@ -6,19 +6,19 @@ A way to save/manage \*OS blobs using [pytatsu](https://github.com/Cryptiiiic/Ta
 
 - Windows/Linux/macOS
 - [Python](https://www.python.org/downloads/) (**>= 3.10**)
-  - [Tkinter](https://tkdocs.com/tutorial/install.html#installlinux) (If running on Linux)
+  - [Tkinter](https://tkdocs.com/tutorial/install.html)
 
 ## Usage
 
 ```sh
-python3 -m pip install pytatsu-tui;
+$ python3 -m pip install pytatsu-tui
 
-tatsu-tui
+$ tatsu-tui
 ```
 
 For every device you have, you'll be asked to provide the following information:
 
-- [Device Model and Board Configuration](./apple_devices.md)
+- [Device Model and Board Configuration](https://github.com/doms9/tatsumanager/blob/default/apple_devices.md)
 - [Exclusive Chip Identification](https://www.theiphonewiki.com/wiki/ECID#Getting_the_ECID) (Decimal and Hex formats supported)
 - [ApNonce](https://gist.github.com/m1stadev/5464ea557c2b999cb9324639c777cd09#getting-a-generator-apnonce-pair-jailbroken) (Required for A12+)
   - This **<ins>DOES NOT</ins>** freeze your ApNonce if your device isn't jailbroken, do that beforehand.
@@ -27,7 +27,7 @@ For every device you have, you'll be asked to provide the following information:
 
 ## Preview
 
-![](./preview.gif)
+![](https://github.com/doms9/tatsu-tui/blob/default/preview.gif)
 
 ---
 

@@ -3,11 +3,21 @@ import shutil
 import subprocess
 from configparser import ConfigParser
 from pathlib import Path
-from tkinter import Tk, filedialog
 from typing import NoReturn
 
 from send2trash import send2trash
 from termcolor import colored
+
+# sourcery skip: raise-from-previous-error
+try:
+    from tkinter import Tk, filedialog
+except ImportError:
+    print(
+        "Please install tkinter before continuing.",
+        "\nGuide: https://tkdocs.com/tutorial/install.html",
+    )
+    raise SystemExit(1)
+
 
 config_prsr = ConfigParser()
 
@@ -290,17 +300,6 @@ def blob_dir(device_number: int) -> Path:
     """
     Path to the directory where blobs are saved for the given device
     """
-
-    # temp code to bypass exceptions: removing on 2023/2/12
-
-    if (config_dir() / f"DEVICE {device_number}").is_dir():
-
-        (config_dir() / "Blobs").mkdir(exist_ok=True)
-
-        shutil.move(
-            config_dir() / f"DEVICE {device_number}",
-            config_dir() / "Blobs" / f"DEVICE {device_number}",
-        )
 
     return config_dir() / "Blobs" / f"DEVICE {device_number}"
 
