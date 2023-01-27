@@ -1,6 +1,10 @@
+dist/
+.DS_Store/
+*.pyc
 .idea/
 __pycache__/
 requirements.in
+poetry.lock
 todo*
 env/
 .vscode/
@@ -14,3 +18,5 @@ virtualenv.pyz
 venv/
 *.plist
 *.shsh2
+*.shsh
+Makefile
