@@ -11,9 +11,11 @@ A way to save/manage \*OS blobs using [pytatsu](https://github.com/Cryptiiiic/Ta
 ## Usage
 
 ```sh
-$ python3 -m pip install pytatsu-tui
+$ python3 -m pip install pytatsu-tui --upgrade
 
 $ tatsu-tui
+
+$ tatsu-tui -u/--unset # Unset the saved config directory
 ```
 
 For every device you have, you'll be asked to provide the following information:

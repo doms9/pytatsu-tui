@@ -25,6 +25,8 @@ ERROR = colored("ERROR:", "red", attrs=["bold"])
 
 SUCCESS = colored("Successfully", "green")
 
+path_txt = Path("./path.txt").resolve()
+
 
 def clear_terminal() -> int:
     """
@@ -90,22 +92,20 @@ def get_cfg_path() -> Path:
     Create path.txt if it doesn't exist
     """
 
-    path_txt = Path("./path.txt").resolve()
-
     clear_terminal()
 
-    print("Please select a directory to save your blobs\n")
+    print("Please select a directory to save your blobs.\n")
 
     Tk().withdraw()
 
-    directory = Path(
-        filedialog.askdirectory(
-            initialdir=Path.cwd().parent,
-            title="Choose a directory for your blobs",
-        )
-    )
-
     try:
+        directory = Path(
+            filedialog.askdirectory(
+                initialdir=Path.home(),
+                title="Choose a directory for your blobs",
+            )
+        )
+
         path_txt.write_text(f"{directory}", encoding="utf-8")
 
         (directory / "permissionchecking12345").mkdir()
@@ -122,7 +122,7 @@ def get_cfg_path() -> Path:
 
     except TypeError:
         wait_to_exit(
-            "Please select a directory to save your config file.",
+            "Please make sure to select a directory.",
             clear=True,
         )
 
@@ -133,8 +133,6 @@ def config_dir() -> Path:
     """
     Path to where the config file, blobs, and buildmanifests are saved
     """
-
-    path_txt = Path("./path.txt").resolve()
 
     if not path_txt.exists():
         return get_cfg_path()
@@ -346,8 +344,10 @@ def rm_device() -> bool | None:
         return
 
     if device in num_of_devices():
+        clear_terminal()
+
         print(
-            f"\nBy proceeding, all saved blobs for DEVICE {device}",
+            f"By proceeding, all saved blobs for DEVICE {device}",
             f"will be {colored('deleted', 'red', attrs=['underline'])}\n",
         )
 

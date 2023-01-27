@@ -13,6 +13,7 @@ from pathlib import Path
 from time import sleep
 from typing import NoReturn
 
+import click
 from pyimg4 import IM4M
 from pytatsu.tss import TSS
 from send2trash import send2trash
@@ -28,6 +29,7 @@ from .config import (
     clear_terminal,
     config_file,
     create_config,
+    path_txt,
     rm_device,
     strtobool,
     wait_to_cont,
@@ -115,9 +117,11 @@ def save_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
             return
 
         elif firmwares.signing_status(version_name):
+            clear_terminal()
+
             print(
-                f"\nSigning status of iOS {version_name} ({version_build})",
-                f"for the {device.name} : {colored('TRUE', 'green')}",
+                f"Signing status of iOS {version_name} ({version_build})",
+                f"for the {device.name}: {colored('TRUE', 'green')}",
             )
 
             asyncio.run(
@@ -134,9 +138,10 @@ def save_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
 
         else:
             wait_to_cont(
-                f"\nSigning status of iOS {version_name} ({version_build})",
-                f"for the {device.name} : {colored('FALSE', 'red')}",
+                f"Signing status of iOS {version_name} ({version_build})",
+                f"for the {device.name}: {colored('FALSE', 'red')}",
                 f"\n\n{colored('Unable', 'red')} to save blobs for DEVICE {device.number}.",
+                clear=True,
             )
 
 
@@ -179,9 +184,10 @@ def view_blob_info(device: DeviceInfo, firmwares: Firmwares) -> None:
 
     else:
         wait_to_cont(
-            f"\n{ERROR} Cannot find saved blobs of iOS {version_name} ({version_build})",
+            f"{ERROR} Cannot find saved blobs of iOS {version_name} ({version_build})",
             f"for DEVICE {device.number}",
             "\n\nTry saving it first.",
+            clear=True,
         )
         return
 
@@ -216,7 +222,9 @@ def view_blob_info(device: DeviceInfo, firmwares: Firmwares) -> None:
 
         shsh_info = IM4M(data["ApImg4Ticket"])
 
-    print(f"\nDEVICE : {device.number} [{device.name}]")
+    clear_terminal()
+
+    print(f"DEVICE : {device.number} [{device.name}]")
 
     for text in blob_info[:3]:
         print(
@@ -474,10 +482,25 @@ def tss_request(device: DeviceInfo, *, version: str, build: str) -> None:
         )
 
 
-def main() -> NoReturn:
+@click.command()
+@click.option(
+    "-u",
+    "--unset",
+    is_flag=True,
+)
+def main(unset: bool) -> NoReturn:
     """
     Display list of options
     """
+
+    if unset and path_txt.exists():
+        old_directory = path_txt.read_text(encoding="utf-8").strip()
+
+        path_txt.unlink()
+
+        print(f'Unset saved directory: "{old_directory}"')
+
+        return
 
     device = DeviceInfo(*get_device_info(device_selection()))
 

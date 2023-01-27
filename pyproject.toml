@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytatsu-tui"
-version = "0.2.1"
+version = "0.2.2"
 description = "A way to save/manage *OS blobs using pytatsu"
 authors = ["doms9 <domsenueve@gmail.com>"]
 license = "LGPL-3.0-only"
