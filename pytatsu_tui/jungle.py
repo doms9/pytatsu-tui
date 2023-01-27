@@ -474,12 +474,12 @@ def tss_request(device: DeviceInfo, *, version: str, build: str) -> None:
         )
 
 
-def main(selected_device: int) -> NoReturn:
+def main() -> NoReturn:
     """
     Display list of options
     """
 
-    device = DeviceInfo(*get_device_info(selected_device))
+    device = DeviceInfo(*get_device_info(device_selection()))
 
     while True:
         clear_terminal()
@@ -543,7 +543,7 @@ def main(selected_device: int) -> NoReturn:
                 wait_to_cont()
 
             case "6":
-                main(device_selection())
+                main()
 
             case "7":
                 add_device()
