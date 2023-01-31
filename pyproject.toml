@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytatsu-tui"
-version = "0.2.3"
+version = "0.2.4"
 description = "A way to save/manage *OS blobs using pytatsu"
 authors = ["doms9 <domsenueve@gmail.com>"]
 license = "LGPL-3.0-only"
@@ -28,7 +28,7 @@ black = "^22.12.0"
 tatsu-tui = { callable = "pytatsu_tui.__main__:main" }
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/doms9/pytatsu-tui"
+"Bug Tracker" = "https://github.com/doms9/pytatsu-tui/issues"
 
 [build-system]
 requires = ["poetry-core"]

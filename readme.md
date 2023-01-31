@@ -1,6 +1,6 @@
 ## What is this?
 
-A way to save/manage \*OS blobs using [pytatsu](https://github.com/Cryptiiiic/Tatsu)
+A way to save/manage \*OS blobs using [pytatsu](https://github.com/Cryptiiiic/pytatsu)
 
 ## Prerequisites
 
@@ -20,7 +20,7 @@ $ tatsu-tui -u/--unset # Unset the saved config directory
 
 For every device you have, you'll be asked to provide the following information:
 
-- [Device Model and Board Configuration](https://github.com/doms9/tatsumanager/blob/default/apple_devices.md)
+- [Device Model and Board Configuration](https://github.com/doms9/pytatsu-tui/blob/default/apple_devices.md)
 - [Exclusive Chip Identification](https://www.theiphonewiki.com/wiki/ECID#Getting_the_ECID) (Decimal and Hex formats supported)
 - [ApNonce](https://gist.github.com/m1stadev/5464ea557c2b999cb9324639c777cd09#getting-a-generator-apnonce-pair-jailbroken) (Required for A12+)
   - This **<ins>DOES NOT</ins>** freeze your ApNonce if your device isn't jailbroken, do that beforehand.
@@ -29,7 +29,7 @@ For every device you have, you'll be asked to provide the following information:
 
 ## Preview
 
-![](https://github.com/doms9/tatsu-tui/blob/default/preview.gif)
+![](https://github.com/doms9/pytatsu-tui/blob/default/preview.gif)
 
 ---
 
@@ -37,4 +37,4 @@ For every device you have, you'll be asked to provide the following information:
 
 ###### [API used for Apple's Beta Firmwares](https://github.com/m1stadev/ios-beta-api)
 
-###### [Cryptiiiic's Pytatsu](https://github.com/Cryptiiiic/Tatsu)
+###### [Cryptiiiic's Pytatsu](https://github.com/Cryptiiiic/pytatsu)
