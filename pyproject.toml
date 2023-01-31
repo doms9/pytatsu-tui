@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "pytatsu-tui"
-version = "0.2.2"
+version = "0.2.3"
 description = "A way to save/manage *OS blobs using pytatsu"
 authors = ["doms9 <domsenueve@gmail.com>"]
 license = "LGPL-3.0-only"
 readme = "readme.md"
-repository = "https://github.com/doms9/tatsumanager"
+repository = "https://github.com/doms9/pytatsu-tui"
 packages = [{ include = "pytatsu_tui" }]
 
 [tool.poetry.dependencies]
@@ -16,7 +16,7 @@ colorama = "0.4.6"
 httpx = "0.23.3"
 nest-asyncio = "1.5.6"
 pyimg4 = "0.7"
-pytatsu = "0.1.4"
+pytatsu = "0.1.5"
 remotezip = "0.9.4"
 send2trash = "1.8.0"
 termcolor = "2.2.0"
@@ -28,7 +28,7 @@ black = "^22.12.0"
 tatsu-tui = { callable = "pytatsu_tui.__main__:main" }
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/doms9/tatsumanager/issues"
+"Bug Tracker" = "https://github.com/doms9/pytatsu-tui"
 
 [build-system]
 requires = ["poetry-core"]

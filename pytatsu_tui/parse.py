@@ -155,7 +155,7 @@ class Firmwares:
         for entry in self.firmwares:
             if build == entry["build"]:
                 ipsw_url = entry["ipsw"]
-                bm_url = entry["buildmanifest"]
+                bm_url = entry["bm"]
 
         try:
             async with httpx.AsyncClient(timeout=TIMEOUT) as client:

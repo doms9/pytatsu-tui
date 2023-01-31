@@ -70,12 +70,10 @@ async def __ios_firmwares(model: str) -> None:
 
         for z in data["firmwares"]:
             z["name"] = z.pop("version").replace("[", "").replace("]", "")
-            z["base"] = re.sub(r"[^0-9.]\s*[a-zA-Z]*\d*", "", z["name"])
+            z["base"] = re.sub(r"[^0-9.].*", "", z["name"])
             z["build"] = z.pop("buildid")
             z["ipsw"] = z.pop("url")
-            z["buildmanifest"] = (
-                re.sub(r"[^/]*$", "", z["ipsw"]) + "BuildManifest.plist"
-            )
+            z["bm"] = f"{''.join(z['ipsw'].rpartition('/')[:2])}BuildManifest.plist"
 
         with firmwares_file.open("w", encoding="utf-8") as c:
             json.dump(data, c, indent=2)

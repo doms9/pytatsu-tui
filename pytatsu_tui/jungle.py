@@ -464,15 +464,17 @@ def tss_request(device: DeviceInfo, *, version: str, build: str) -> None:
 
     blob = Path("./blob.shsh2")
 
-    tss = TSS(
-        board=device.board,
-        ecid=device.ecid,
-        generator=device.generator,
-        apnonce=device.apnonce,
-        build_manifest_path=str(bm_dir() / f"{version}-{build}-{device.board}.plist"),
-    )
-
     with hide_prints():
+        tss = TSS(
+            board=device.board,
+            ecid=device.ecid,
+            generator=device.generator,
+            apnonce=device.apnonce,
+            build_manifest_path=str(
+                bm_dir() / f"{version}-{build}-{device.board}.plist"
+            ),
+        )
+
         tss.send_request()
 
     if blob.is_file():
@@ -498,7 +500,7 @@ def main(unset: bool) -> NoReturn:
 
         path_txt.unlink()
 
-        print(f'Unset saved directory: "{old_directory}"')
+        print(f'Unset saved config directory: "{old_directory}"')
 
         return
 
