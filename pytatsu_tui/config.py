@@ -25,8 +25,6 @@ ERROR = colored("ERROR:", "red", attrs=["bold"])
 
 SUCCESS = colored("Successfully", "green")
 
-path_txt = Path("./path.txt").resolve()
-
 
 def clear_terminal() -> int:
     """
@@ -102,11 +100,11 @@ def get_cfg_path() -> Path:
         directory = Path(
             filedialog.askdirectory(
                 initialdir=Path.home(),
-                title="Choose a directory for your blobs",
+                title="Choose a directory for your blobs.",
             )
         )
 
-        path_txt.write_text(f"{directory}", encoding="utf-8")
+        (path_txt := Path("./path.txt")).write_text(f"{directory}", encoding="utf-8")
 
         (directory / "permissionchecking12345").mkdir()
 
@@ -134,7 +132,7 @@ def config_dir() -> Path:
     Path to where the config file, blobs, and buildmanifests are saved
     """
 
-    if not path_txt.exists():
+    if not (path_txt := Path("./path.txt")).exists():
         return get_cfg_path()
 
     try:

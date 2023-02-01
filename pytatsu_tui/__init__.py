@@ -17,4 +17,6 @@ create_config()
 
 nest_asyncio.apply()
 
-__all__ = ["main",]
+__all__ = [
+    "main",
+]

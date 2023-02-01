@@ -29,7 +29,6 @@ from .config import (
     clear_terminal,
     config_file,
     create_config,
-    path_txt,
     rm_device,
     strtobool,
     wait_to_cont,
@@ -490,12 +489,12 @@ def tss_request(device: DeviceInfo, *, version: str, build: str) -> None:
     "--unset",
     is_flag=True,
 )
-def main(unset: bool) -> NoReturn:
+def main(unset: bool = False) -> NoReturn:
     """
     Display list of options
     """
 
-    if unset and path_txt.exists():
+    if unset and (path_txt := Path("./path.txt")).exists():
         old_directory = path_txt.read_text(encoding="utf-8").strip()
 
         path_txt.unlink()
