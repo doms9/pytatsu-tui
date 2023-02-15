@@ -177,7 +177,6 @@ def view_blob_info(device: DeviceInfo, firmwares: Firmwares) -> None:
             and file.find(f"{version_num}-{version_build}") != -1
             and file.endswith(".shsh2")
         ) or file == f"{version_num}-{version_build}.shsh2":
-
             blob_file = file
             break
 
@@ -216,7 +215,6 @@ def view_blob_info(device: DeviceInfo, firmwares: Firmwares) -> None:
     blob_info = img4tool_output.stdout.split("\n")[lines - 11 : lines - 2]  # noqa
 
     with (blob_dir(device.number) / blob_file).open("rb") as shsh_file:
-
         data = plistlib.load(shsh_file)
 
         shsh_info = IM4M(data["ApImg4Ticket"])
@@ -324,7 +322,6 @@ def list_saved_blobs(device: DeviceInfo, firmwares: Firmwares) -> None:
 
             # For the iOS versions that aren't scraped (yet)
             if version_name is None:
-
                 # saved with tsschecker
                 if (
                     blob_1st_half.lower().find(f"{device.ecid}_{device.model.lower()}")
@@ -483,15 +480,21 @@ def tss_request(device: DeviceInfo, *, version: str, build: str) -> None:
         )
 
 
-@click.command()
+@click.command(
+    context_settings={
+        "help_option_names": ["-h", "--help"],
+    },
+)
 @click.option(
     "-u",
     "--unset",
     is_flag=True,
+    default=False,
+    help="Unset the saved config directory",
 )
-def main(unset: bool = False) -> NoReturn:
+def main(unset: bool) -> NoReturn:
     """
-    Display list of options
+    A way to save/manage *OS blobs using pytatsu.
     """
 
     if unset and (path_txt := Path("./path.txt")).exists():

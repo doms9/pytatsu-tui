@@ -134,7 +134,6 @@ def get_device_info(device: int) -> tuple[int, str, str, int, str, str]:
             )
 
         elif ((1 <= len(value) < 18) or (len(value) > 18)) and key == "generator":
-
             wait_to_exit(
                 f"{ERROR} Invalid GENERATOR for DEVICE {device}",
                 f"\n\nCurrent length: {len(value)}\nAccepted length: 18",

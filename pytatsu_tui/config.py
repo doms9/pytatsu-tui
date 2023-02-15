@@ -415,7 +415,6 @@ def update_config(
     selected_device: int,
     total_devices: int,
 ) -> None:
-
     """
     Update the config after removing a device
     """

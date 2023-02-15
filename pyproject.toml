@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytatsu-tui"
-version = "0.2.5"
+version = "0.2.6"
 description = "A way to save/manage *OS blobs using pytatsu"
 authors = ["doms9 <domsenueve@gmail.com>"]
 license = "LGPL-3.0-only"
@@ -10,15 +10,15 @@ packages = [{ include = "pytatsu_tui" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-attrs = "22.2.0"
-colorama = "0.4.6"
-httpx = "0.23.3"
-nest-asyncio = "1.5.6"
-pyimg4 = "0.7"
-pytatsu = "0.1.5"
-remotezip = "0.9.4"
-send2trash = "1.8.0"
-termcolor = "2.2.0"
+attrs = "^22.2.0"
+colorama = "^0.4.6"
+httpx = "^0.23.3"
+nest-asyncio = "^1.5.6"
+pyimg4 = "^0.7"
+pytatsu = "^0.1.5"
+remotezip = "^0.9.4"
+send2trash = "^1.8.0"
+termcolor = "^2.2.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.12.0"

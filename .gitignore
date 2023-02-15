@@ -3,13 +3,13 @@ dist/
 *.pyc
 .idea/
 __pycache__/
-requirements.in
 poetry.lock
 todo*
 env/
 .vscode/
 # -
-dev/
+requirements.in
+requirements.txt
 devices.json
 firmwares.json
 path.txt
