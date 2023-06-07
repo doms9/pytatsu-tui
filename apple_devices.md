@@ -71,25 +71,25 @@
 | iPad 3 (WiFi)                               | iPad3,1           | j1ap                |
 | iPad 3 (CDMA)                               | iPad3,2           | j2ap                |
 | iPad 3 (GSM)                                | iPad3,3           | j2aap               |
-| iPad Mini (WiFi)                            | iPad2,5           | p105ap              |
-| iPad Mini (GSM)                             | iPad2,6           | p106ap              |
-| iPad Mini (Global)                          | iPad2,7           | p107ap              |
+| iPad mini (WiFi)                            | iPad2,5           | p105ap              |
+| iPad mini (GSM)                             | iPad2,6           | p106ap              |
+| iPad mini (Global)                          | iPad2,7           | p107ap              |
 | iPad 4 (WiFi)                               | iPad3,4           | p101ap              |
 | iPad 4 (GSM)                                | iPad3,5           | p102ap              |
 | iPad 4 (Global)                             | iPad3,6           | p103ap              |
-| iPad Mini 2 (WiFi)                          | iPad4,4           | j85ap               |
-| iPad Mini 2 (Cellular)                      | iPad4,5           | j86ap               |
+| iPad mini 2 (WiFi)                          | iPad4,4           | j85ap               |
+| iPad mini 2 (Cellular)                      | iPad4,5           | j86ap               |
 | iPad Air (WiFi)                             | iPad4,1           | j71ap               |
 | iPad Air (Cellular)                         | iPad4,2           | j72ap               |
 | iPad Air (China)                            | iPad4,3           | j73ap               |
-| iPad Mini 2 (China)                         | iPad4,6           | j87ap               |
-| iPad Mini 3 (WiFi)                          | iPad4,7           | j85map              |
-| iPad Mini 3 (Cellular)                      | iPad4,8           | j86map              |
-| iPad Mini 3 (China)                         | iPad4,9           | j87map              |
+| iPad mini 2 (China)                         | iPad4,6           | j87ap               |
+| iPad mini 3 (WiFi)                          | iPad4,7           | j85map              |
+| iPad mini 3 (Cellular)                      | iPad4,8           | j86map              |
+| iPad mini 3 (China)                         | iPad4,9           | j87map              |
 | iPad Air 2 (WiFi)                           | iPad5,3           | j81ap               |
 | iPad Air 2 (Cellular)                       | iPad5,4           | j82ap               |
-| iPad Mini 4 (WiFi)                          | iPad5,1           | j96ap               |
-| iPad Mini 4 (Cellular)                      | iPad5,2           | j97ap               |
+| iPad mini 4 (WiFi)                          | iPad5,1           | j96ap               |
+| iPad mini 4 (Cellular)                      | iPad5,2           | j97ap               |
 | iPad Pro 12.9-inch (WiFi)                   | iPad6,7           | j98aap              |
 | iPad Pro 12.9-inch (Cellular)               | iPad6,8           | j99aap              |
 | iPad Pro 9.7-inch (Cellular)                | iPad6,4           | j128ap              |
@@ -112,8 +112,8 @@
 | iPad Pro 3 (12.9-inch, WiFi)                | iPad8,5           | j320ap              |
 | iPad Pro 3 (12.9-inch, Cellular)            | iPad8,7           | j321ap              |
 | iPad Pro 3 (12.9-inch, Cellular, 1TB Model) | iPad8,8           | j321xap             |
-| iPad Mini 5 (WiFi)                          | iPad11,1          | j210ap              |
-| iPad Mini 5 (Cellular)                      | iPad11,2          | j211ap              |
+| iPad mini 5 (WiFi)                          | iPad11,1          | j210ap              |
+| iPad mini 5 (Cellular)                      | iPad11,2          | j211ap              |
 | iPad Air 3 (WiFi)                           | iPad11,3          | j217ap              |
 | iPad Air 3 (Cellular)                       | iPad11,4          | j218ap              |
 | iPad 7 (Cellular)                           | iPad7,12          | j172ap              |
@@ -138,10 +138,10 @@
 | iPad 9 (WiFi)                               | iPad12,1          | j181dev             |
 | iPad 9 (Cellular)                           | iPad12,2          | j182ap              |
 | iPad 9 (Cellular)                           | iPad12,2          | j182dev             |
-| iPad Mini 6 (WiFi)                          | iPad14,1          | j310ap              |
-| iPad Mini 6 (WiFi)                          | iPad14,1          | j310dev             |
-| iPad Mini 6 (Cellular)                      | iPad14,2          | j311ap              |
-| iPad Mini 6 (Cellular)                      | iPad14,2          | j311dev             |
+| iPad mini 6 (WiFi)                          | iPad14,1          | j310ap              |
+| iPad mini 6 (WiFi)                          | iPad14,1          | j310dev             |
+| iPad mini 6 (Cellular)                      | iPad14,2          | j311ap              |
+| iPad mini 6 (Cellular)                      | iPad14,2          | j311dev             |
 | iPad Air 5 (Cellular)                       | iPad13,17         | j408ap              |
 | iPad Air 5 (WiFi)                           | iPad13,16         | j407ap              |
 | iPad (10th generation)                      | iPad13,18         | j271ap              |
@@ -152,7 +152,7 @@
 | iPad Pro (12.9-inch) (6th generation)       | iPad14,6          | j621ap              |
 | MacBook Pro (M1, Late 2020)                 | MacBookPro17,1    | j293ap              |
 | MacBook Air (M1, Late 2020)                 | MacBookAir10,1    | j313ap              |
-| Mac Mini (M1, Late 2020)                    | Macmini9,1        | j274ap              |
+| Mac mini (M1, Late 2020)                    | Macmini9,1        | j274ap              |
 | iMac 24-inch (M1, Two Ports, 2021)          | iMac21,1          | j456ap              |
 | iMac 24-inch (M1, Four Ports, 2021)         | iMac21,2          | j457ap              |
 | MacBook Pro (M1 Max, 16-inch, 2021)         | MacBookPro18,2    | j316cap             |
@@ -170,6 +170,10 @@
 | MacBook Pro (M2 Pro, 14-inch, 2023)         | Mac14,9           | j414sap             |
 | Mac mini (M2 Pro, 2023)                     | Mac14,12          | j474sap             |
 | MacBook Pro (M2 Pro, 16-inch, 2023)         | Mac14,10          | j416sap             |
+| MacBook Air (15-inch, M2, 2023)             | Mac14,15          | j415ap              |
+| Mac Studio (M2 Max, 2023)                   | Mac14,13          | j475cap             |
+| Mac Studio (M2 Ultra, 2023)                 | Mac14,14          | j475dap             |
+| Mac Pro (2023)                              | Mac14,8           | j180dap             |
 | Apple Watch (38mm)                          | Watch1,1          | n27aap              |
 | Apple Watch (42mm)                          | Watch1,2          | n28aap              |
 | Apple Watch Series 2 (38mm)                 | Watch2,3          | n74ap               |
